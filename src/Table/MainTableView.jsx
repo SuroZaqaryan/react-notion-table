@@ -3,7 +3,6 @@ import exampleSpec from "./exampleSpec.json";
 import { randomColor } from "./utils/utils";
 import TableWrapper from "./ui/TableWrapper";
 
-// Функция преобразует данные в массив таблиц
 function transformSpecToTables(spec) {
   const tables = [];
 
@@ -28,7 +27,9 @@ function transformSpecToTables(spec) {
 
         tables.push({
           id: `${item.item_name}-${Math.random().toString(36).slice(2)}`,
+          chapterName: chapter.chapter_name,
           itemName: item.item_name,
+          okpd2: item.OKPD2,
           data: rows,
         });
       });
@@ -42,8 +43,14 @@ function MainTableView() {
 
   return (
     <div className="table-group">
-      {tables.map(({ id, itemName, data }) => (
-        <TableWrapper key={id} itemName={itemName} data={data} />
+      {tables.map(({ id, chapterName, itemName, okpd2, data }) => (
+        <TableWrapper
+          key={id}
+          chapterName={chapterName}
+          itemName={itemName}
+          okpd2={okpd2}
+          data={data}
+        />
       ))}
     </div>
   );

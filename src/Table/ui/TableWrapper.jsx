@@ -3,7 +3,7 @@ import Table from "./Table";
 import { reducer } from "../lib/reducer";
 import columns from "../columns/columns";
 
-function TableWrapper({ itemName, data }) {
+function TableWrapper({ chapterName, itemName, okpd2, data }) {
   const [state, dispatch] = useReducer(reducer, {
     columns,
     data,
@@ -16,7 +16,9 @@ function TableWrapper({ itemName, data }) {
 
   return (
     <div className="table-wrapper">
-      <h2>{itemName}</h2>
+      <h2>{chapterName}</h2>
+      <p><strong>Изделие:</strong> {itemName}</p>
+      <p><strong>ОКПД2:</strong> {okpd2}</p>
       <Table
         columns={state.columns}
         data={state.data}
