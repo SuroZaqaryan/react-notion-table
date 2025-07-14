@@ -30,30 +30,42 @@ export function reducer(state, action) {
 
     case 'INSERT_ROW': {
       const newData = [...state.data];
-      const currentRow = newData[action.index - 1]; // строка, перед которой вставляем
+      const currentRow = newData[action.index - 1];
 
-      const dopCharsItem = exampleSpec.chapters[0].items[0].dop_chars.find(
+      const matchingItem = exampleSpec.chapters
+        .flatMap(ch => ch.items || [])
+        .find(item => item.item_name === currentRow.item_name);
+
+      if (!matchingItem) return state;
+
+      const dopCharsItem = matchingItem.dop_chars?.find(
         char => char.name === currentRow.name
       );
 
       if (!dopCharsItem) return state;
 
       const usedValues = newData
-        .filter(row => row.name === currentRow.name)
+        .filter(row =>
+          row.name === currentRow.name &&
+          row.item_name === currentRow.item_name
+        )
         .map(row => row.value);
 
-      const nextAvailable = dopCharsItem.values.find(v => !usedValues.includes(v.value));
+      const alreadyAdded = dopCharsItem.values.some(v => usedValues.includes(v.value));
+      if (alreadyAdded) return state;
 
-      if (!nextAvailable) return state;
+      const nextValue = dopCharsItem.values[0];
+      if (!nextValue) return state;
 
       const newRow = {
+        item_name: currentRow.item_name,
         name: currentRow.name,
-        value: nextAvailable.value,
+        value: nextValue.value,
         unit: currentRow.unit || '',
         options: dopCharsItem.values.map(v => ({
           label: v.value,
           backgroundColor: randomColor(),
-        }))
+        })),
       };
 
       newData.splice(action.index, 0, newRow);
