@@ -1,0 +1,33 @@
+{
+  "name": "create_spec",
+  "parameters": {
+    "chapters": [
+      {
+        "chapter_name": "Раздел 1",
+        "item_name": "Станок X100",
+        "date": "2025-07-11",
+        "address": "г. Ереван, ул. Абовяна, д. 15",
+        "OKPD2": "28.41.10",
+
+        "main_chars": [
+          { "category": "Габариты1", "name": "Длина", "value": "150", "unit": "см" },
+          { "category": "Габариты2", "name": "Ширина", "value": "80", "unit": "см" },
+          { "category": "Габариты3", "name": "Высота", "value": "120", "unit": "см" },
+          { "category": "Электропитание", "name": "Мощность", "value": "750", "unit": "Вт" },
+          { "category": "Электропитание", "name": "Напряжение", "value": "220", "unit": "В" }
+        ],
+        
+        "dop_chars": [
+          { "category": "Габариты", "name": "Длина", "value": "140", "unit": "см" },
+          { "category": "Габариты", "name": "Длина", "value": "160", "unit": "см" },
+          { "category": "Габариты", "name": "Ширина", "value": "75", "unit": "см" },
+          { "category": "Габариты", "name": "Высота", "value": "110", "unit": "см" },
+          { "category": "Габариты", "name": "Высота", "value": "130", "unit": "см" },
+          { "category": "Электропитание", "name": "Мощность", "value": "800", "unit": "Вт" },
+          { "category": "Электропитание", "name": "Мощность", "value": "700", "unit": "Вт" },
+          { "category": "Электропитание", "name": "Напряжение", "value": "230", "unit": "В" }
+        ]
+      }
+    ]
+  }
+}
