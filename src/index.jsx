@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './Table/App';
+import MainTableView from './Table/MainTableView';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <MainTableView />
   </React.StrictMode>,
   document.getElementById('root')
 );
