@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ContentEditable from 'react-contenteditable';
 import { ActionTypes } from '../utils';
 

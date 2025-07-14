@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { usePopper } from 'react-popper';
 import { Constants } from '../utils';
 import AddColumnHeader from './AddColumnHeader';

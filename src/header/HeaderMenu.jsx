@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ArrowUpIcon from '../img/ArrowUp';
 import ArrowDownIcon from '../img/ArrowDown';
 import ArrowLeftIcon from '../img/ArrowLeft';

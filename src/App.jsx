@@ -32,7 +32,7 @@ function transformSpecToTableData(spec) {
     }));
 
     return {
-      item_name: item.item_name, 
+      item_name: item.item_name,
       name: char.name,
       value: char.values[0].value,
       unit: char.unit || '',
@@ -51,27 +51,12 @@ function App() {
   }, [state.data, state.columns]);
 
   return (
-    <div style={{
-      width: "100vw",
-      height: "100vh",
-      overflowX: "hidden",
-      paddingRight: "9rem",
-    }}>
-      <div style={{ overflow: "auto", display: "flex" }}>
-        <div style={{
-          flex: "1 1 auto",
-          marginLeft: "90",
-          marginRight: "auto",
-        }}>
-          <Table
-            columns={state.columns}
-            data={state.data}
-            dispatch={dispatch}
-            skipReset={state.skipReset}
-          />
-        </div>
-      </div>
-    </div>
+    <Table
+      columns={state.columns}
+      data={state.data}
+      dispatch={dispatch}
+      skipReset={state.skipReset}
+    />
   );
 }
 

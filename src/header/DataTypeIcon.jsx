@@ -1,4 +1,3 @@
-import React from 'react';
 import { DataTypes } from '../utils';
 import TextIcon from '../img/Text';
 import MultiIcon from '../img/Multi';

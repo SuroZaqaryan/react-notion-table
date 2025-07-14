@@ -1,4 +1,3 @@
-import React from 'react';
 import { ActionTypes, DataTypes, shortId } from '../utils';
 import DataTypeIcon from './DataTypeIcon';
 
