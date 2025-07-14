@@ -1,4 +1,5 @@
 import { randomColor, shortId } from "../utils";
+import exampleSpec from '../exampleSpec.json';
 
 export function reducer(state, action) {
   switch (action.type) {
@@ -27,16 +28,43 @@ export function reducer(state, action) {
       };
     }
 
-    case 'INSERT_ROW':
+    case 'INSERT_ROW': {
+      const newData = [...state.data];
+      const currentRow = newData[action.index - 1]; // строка, перед которой вставляем
+
+      const dopCharsItem = exampleSpec.chapters[0].items[0].dop_chars.find(
+        char => char.name === currentRow.name
+      );
+
+      if (!dopCharsItem) return state;
+
+      const usedValues = newData
+        .filter(row => row.name === currentRow.name)
+        .map(row => row.value);
+
+      const nextAvailable = dopCharsItem.values.find(v => !usedValues.includes(v.value));
+
+      if (!nextAvailable) return state;
+
+      const newRow = {
+        name: currentRow.name,
+        value: nextAvailable.value,
+        unit: currentRow.unit || '',
+        options: dopCharsItem.values.map(v => ({
+          label: v.value,
+          backgroundColor: randomColor(),
+        }))
+      };
+
+      newData.splice(action.index, 0, newRow);
+
       return {
         ...state,
+        data: newData,
         skipReset: true,
-        data: [
-          ...state.data.slice(0, action.index),
-          {},
-          ...state.data.slice(action.index)
-        ]
       };
+    }
+
     case "add_option_to_column":
       const optionIndex = state.columns.findIndex(
         (column) => column.id === action.columnId

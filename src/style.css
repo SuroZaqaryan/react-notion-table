@@ -379,8 +379,7 @@ html {
   right: 0;
   top: 0;
   height: 100%;
-  width: 5px;
-  background: rgba(0, 0, 0, 0.1) !important;
+  width: 1px;
   cursor: col-resize;
   user-select: none;
   touch-action: none;
