@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react';
-import ArrowUpIcon from '../img/ArrowUp';
-import ArrowDownIcon from '../img/ArrowDown';
-import ArrowLeftIcon from '../img/ArrowLeft';
-import ArrowRightIcon from '../img/ArrowRight';
-import TrashIcon from '../img/Trash';
+import { ArrowDown, ArrowUp, ArrowLeft, ArrowRight, Trash2  } from 'lucide-react';
 import { grey } from '../utils/colors';
 import TypesMenu from './TypesMenu';
 import { usePopper } from 'react-popper';
@@ -57,7 +53,7 @@ export default function HeaderMenu({
         setSortBy([{ id: columnId, desc: false }]);
         setShowHeaderMenu(false);
       },
-      icon: <ArrowUpIcon />,
+      icon: <ArrowUp />,
       label: 'Sort ascending',
     },
     {
@@ -70,7 +66,7 @@ export default function HeaderMenu({
         setSortBy([{ id: columnId, desc: true }]);
         setShowHeaderMenu(false);
       },
-      icon: <ArrowDownIcon />,
+      icon: <ArrowDown />,
       label: 'Sort descending',
     },
     {
@@ -87,7 +83,7 @@ export default function HeaderMenu({
         });
         setShowHeaderMenu(false);
       },
-      icon: <ArrowLeftIcon />,
+      icon: <ArrowLeft />,
       label: 'Insert left',
     },
     {
@@ -104,7 +100,7 @@ export default function HeaderMenu({
         });
         setShowHeaderMenu(false);
       },
-      icon: <ArrowRightIcon />,
+      icon: <ArrowRight />,
       label: 'Insert right',
     },
     {
@@ -112,7 +108,7 @@ export default function HeaderMenu({
         dataDispatch({ type: ActionTypes.DELETE_COLUMN, columnId });
         setShowHeaderMenu(false);
       },
-      icon: <TrashIcon />,
+      icon: <Trash2  />,
       label: 'Delete',
     },
   ];

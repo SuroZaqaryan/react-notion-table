@@ -1,4 +1,5 @@
 import { useDrag } from 'react-dnd';
+import { GripVertical } from 'lucide-react';
 
 export default function DragHandleCell({ rowIndex }) {
   const [, drag] = useDrag({
@@ -7,10 +8,10 @@ export default function DragHandleCell({ rowIndex }) {
   });
 
   return (
-    <div 
+    <div
       ref={drag}
-      style={{ 
-        cursor: 'move', 
+      style={{
+        cursor: 'move',
         textAlign: 'center',
         width: '100%',
         height: '100%',
@@ -19,9 +20,7 @@ export default function DragHandleCell({ rowIndex }) {
         justifyContent: 'center'
       }}
     >
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M9 3h2v2H9zm4 0h2v2h-2zM9 7h2v2H9zm4 0h2v2h-2zM9 11h2v2H9zm4 0h2v2h-2zM9 15h2v2H9zm4 0h2v2h-2zM9 19h2v2H9zm4 0h2v2h-2z" fill="currentColor"/>
-      </svg>
+      <GripVertical size={17} />
     </div>
   );
 }

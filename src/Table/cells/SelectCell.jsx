@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { usePopper } from 'react-popper';
 import Badge from '../ui/Badge';
 import { grey } from '../utils/colors';
-import PlusIcon from '../img/Plus';
+import { Plus } from 'lucide-react';
 import { ActionTypes, randomColor } from '../utils/utils';
 
 export default function SelectCell({
@@ -183,7 +183,7 @@ export default function SelectCell({
                 <Badge
                   value={
                     <span className="svg-icon-sm svg-text">
-                      <PlusIcon />
+                      <Plus />
                     </span>
                   }
                   backgroundColor={grey(200)}

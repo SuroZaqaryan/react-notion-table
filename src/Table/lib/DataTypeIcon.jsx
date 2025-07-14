@@ -1,17 +1,15 @@
 import { DataTypes } from '../utils/utils';
-import TextIcon from '../img/Text';
-import MultiIcon from '../img/Multi';
-import HashIcon from '../img/Hash';
+import { Hash , Copy, AlignLeft } from 'lucide-react';
 
 export default function DataTypeIcon({ dataType }) {
   function getPropertyIcon(dataType) {
     switch (dataType) {
       case DataTypes.NUMBER:
-        return <HashIcon />;
+        return <Hash  />;
       case DataTypes.TEXT:
-        return <TextIcon />;
+        return <AlignLeft />;
       case DataTypes.SELECT:
-        return <MultiIcon />;
+        return <Copy  />;
       default:
         return null;
     }

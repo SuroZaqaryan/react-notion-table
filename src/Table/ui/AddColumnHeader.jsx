@@ -1,5 +1,5 @@
-import PlusIcon from '../img/Plus';
 import { ActionTypes, Constants } from '../utils/utils';
+import { Plus } from 'lucide-react';
 
 export default function AddColumnHeader({ getHeaderProps, dataDispatch }) {
   return (
@@ -15,7 +15,7 @@ export default function AddColumnHeader({ getHeaderProps, dataDispatch }) {
         }
       >
         <span className="svg-icon-sm svg-gray">
-          <PlusIcon />
+          <Plus />
         </span>
       </div>
     </div>

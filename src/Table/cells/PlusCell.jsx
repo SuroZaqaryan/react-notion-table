@@ -1,3 +1,6 @@
+
+import { Plus } from 'lucide-react';
+
 export default function PlusCell({ rowIndex, dataDispatch }) {
     return (
         <span
@@ -15,7 +18,7 @@ export default function PlusCell({ rowIndex, dataDispatch }) {
                 cursor: 'pointer'
             }}
         >
-            <img src='https://www.iconpacks.net/icons/2/free-plus-icon-3107-thumb.png' width={16} height={16} />
+            <Plus style={{ top: 0 }} size={15} />
         </span>
     );
 }
