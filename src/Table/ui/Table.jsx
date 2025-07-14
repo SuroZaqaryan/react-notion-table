@@ -181,7 +181,6 @@ function Table({ columns, data, dispatch: dataDispatch, skipReset }) {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div style={{ maxWidth: '100vw', height: '100vh', overflow: 'auto', display: 'flex' }}>
         <div
           {...getTableProps()}
           className={clsx('table', isTableResizing() && 'noselect')}
@@ -220,7 +219,6 @@ function Table({ columns, data, dispatch: dataDispatch, skipReset }) {
             ))}
           </div>
         </div>
-      </div>
     </DndProvider>
   );
 }

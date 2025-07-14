@@ -195,6 +195,14 @@ html {
   display: block;
 }
 
+.table-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5rem;
+  margin-top: 3rem;
+}
+
 .table {
   display: inline-block;
   border-spacing: 0;
