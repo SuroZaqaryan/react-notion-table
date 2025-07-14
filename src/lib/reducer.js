@@ -193,15 +193,17 @@ export function reducer(state, action) {
         skipReset: true,
         data: state.data.map((row, index) => {
           if (index === action.rowIndex) {
-            console.log('checked', state.data[action.rowIndex])
+            const isSelectionColumn = action.columnId === "selection";
             return {
-              ...state.data[action.rowIndex],
+              ...row,
               [action.columnId]: action.value,
+              ...(isSelectionColumn && { selected: action.value }), // добавляем selected = true/false
             };
           }
           return row;
         }),
       };
+
     case "add_column_to_left":
       const leftIndex = state.columns.findIndex(
         (column) => column.id === action.columnId

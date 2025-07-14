@@ -428,3 +428,12 @@ html {
   opacity: 1;
 }
 
+/* Показываем элементы при ховере */
+.tr:hover .hidden-cell {
+  opacity: 1;
+}
+
+/* Показываем элементы, если строка выбрана (чекбокс активен) */
+.tr.tr-selected .hidden-cell {
+  opacity: 1;
+}

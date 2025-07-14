@@ -60,6 +60,8 @@ const Row = ({ row, index, prepareRow, moveRow }) => {
 
   prepareRow(row);
 
+  const isSelected = row.original?.selected;
+
   return (
     <div
       ref={dropRef}
@@ -73,6 +75,7 @@ const Row = ({ row, index, prepareRow, moveRow }) => {
       className={clsx('tr', {
         'tr-dragging': isDragging,
         'tr-over': isOver && !isDragging,
+        'tr-selected': isSelected, 
       })}
       {...row.getRowProps({
         style: {
@@ -93,11 +96,11 @@ const Row = ({ row, index, prepareRow, moveRow }) => {
             ref={cellIndex === 1 ? drag : null}
             style={{
               ...cell.getCellProps().style,
-              ...(isHiddenCell && 
-                { 
-                  width: 30,
-                  ...(cell.column.dataType === 'plus' && { marginRight: 8 })
-                 }
+              ...(isHiddenCell &&
+              {
+                width: 30,
+                ...(cell.column.dataType === 'plus' && { marginRight: 8 })
+              }
               )
             }}
           >
