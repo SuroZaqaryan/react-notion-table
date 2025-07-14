@@ -7,104 +7,36 @@ import exampleSpec from './exampleSpec.json'
 
 // Функция для преобразования данных в формат таблицы
 function transformSpecToTableData(spec) {
-  const chapter = spec.parameters.chapters[0];
+  const chapter = spec.chapters[0];
+  const item = chapter.items[0];
 
-  // Создаем колонки
   const columns = [
-    {
-      id: "selection",
-      label: "",
-      accessor: "selection",
-      dataType: "checkbox",
-      className: "hidden-col",
-      width: 40,
-      disableResizing: true
-    },
-    // колонка для перетаскивания
-    {
-      id: "drag-handle",
-      label: "",
-      accessor: "drag-handle",
-      dataType: "drag-handle",
-      className: "hidden-col",
-      width: 40,
-      disableResizing: true
-    },
-    {
-      id: "plus",
-      label: "",
-      accessor: "plus",
-      dataType: "plus",
-      className: "hidden-col",
-      width: 40,
-      disableResizing: true
-    },
-    {
-      id: "category",
-      label: "Категория",
-      accessor: "category",
-      dataType: "text",
-      options: []
-    },
-    {
-      id: "name",
-      label: "Название",
-      accessor: "name",
-      dataType: "text",
-      options: []
-    },
+    { id: "selection", label: "", accessor: "selection", dataType: "checkbox", className: "hidden-col", width: 40, disableResizing: true },
+    { id: "drag-handle", label: "", accessor: "drag-handle", dataType: "drag-handle", className: "hidden-col", width: 40, disableResizing: true },
+    { id: "plus", label: "", accessor: "plus", dataType: "plus", className: "hidden-col", width: 40, disableResizing: true },
+    { id: "name", label: "Название", accessor: "name", dataType: "text", options: [] },
     {
       id: "value",
       label: "Значение",
       accessor: "value",
-      dataType: "text",
-      options: []
+      dataType: "select",
+      options: [] 
     },
-    {
-      id: "unit",
-      label: "Ед. измерения",
-      accessor: "unit",
-      dataType: "text",
-      options: []
-    }
+    { id: "unit", label: "Ед. измерения", accessor: "unit", dataType: "text", options: [] }
   ];
 
-  // Создаем строки и находим варианты значений из dop_chars
-  const rows = [];
+  const rows = item.main_chars.map(char => {
+    const options = char.values.map(v => ({
+      label: v.value,
+      backgroundColor: randomColor(),
+    }));
 
-  chapter.main_chars.forEach(char => {
-    // Находим альтернативные значения из dop_chars
-    const alternatives = chapter.dop_chars.filter(
-      d => d.name === char.name
-    );
-
-    // Если есть альтернативы, меняем тип на select и добавляем опции
-    if (alternatives.length > 0) {
-      const valueColumn = columns.find(c => c.id === "value");
-      valueColumn.dataType = "select";
-
-      // Добавляем все варианты (текущее значение + альтернативы)
-      const allOptions = [
-        { label: char.value, backgroundColor: randomColor() },
-        ...alternatives.map(a => ({
-          label: a.value,
-          backgroundColor: randomColor()
-        }))
-      ];
-
-      // Удаляем дубликаты
-      valueColumn.options = allOptions.filter(
-        (option, index, self) =>
-          index === self.findIndex(o => o.label === option.label)
-      );
-    }
-
-    rows.push({
-      category: char.category,
+    return {
       name: char.name,
-      value: char.value,
-      unit: char.unit
-    });
+      value: char.values[0].value,
+      unit: char.unit || '',
+      options, // только main_chars.values
+    };
   });
 
   return { columns, data: rows, skipReset: false };

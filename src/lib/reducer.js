@@ -8,6 +8,25 @@ export function reducer(state, action) {
         data: action.data,
         skipReset: true
       };
+    case 'ADD_OPTION_TO_ROW': {
+      const newData = [...state.data];
+      const row = newData[action.rowIndex];
+      const existing = row.options || [];
+
+      // Удаляем дубликаты по label
+      const newOptions = [...existing, action.option].filter(
+        (opt, i, self) => i === self.findIndex(o => o.label === opt.label)
+      );
+
+      row.options = newOptions;
+
+      return {
+        ...state,
+        skipReset: true,
+        data: newData
+      };
+    }
+
     case 'INSERT_ROW':
       return {
         ...state,

@@ -65,29 +65,41 @@ export default function SelectCell({
 
   function handleOptionKeyDown(e) {
     if (e.key === 'Enter') {
-      if (e.target.value !== '') {
+      const newLabel = e.target.value.trim();
+      if (newLabel !== '') {
         dataDispatch({
-          type: ActionTypes.ADD_OPTION_TO_COLUMN,
-          option: e.target.value,
-          backgroundColor: randomColor(),
-          columnId,
+          type: 'ADD_OPTION_TO_ROW',
+          rowIndex,
+          option: {
+            label: newLabel,
+            backgroundColor: randomColor(),
+          }
         });
+
+        setValue({ value: newLabel, update: true });
       }
       setShowAdd(false);
     }
   }
 
+
   function handleOptionBlur(e) {
-    if (e.target.value !== '') {
+    const newLabel = e.target.value.trim();
+    if (newLabel !== '') {
       dataDispatch({
-        type: ActionTypes.ADD_OPTION_TO_COLUMN,
-        option: e.target.value,
-        backgroundColor: randomColor(),
-        columnId,
+        type: 'ADD_OPTION_TO_ROW',
+        rowIndex,
+        option: {
+          label: newLabel,
+          backgroundColor: randomColor(),
+        }
       });
+
+      setValue({ value: newLabel, update: true });
     }
     setShowAdd(false);
   }
+
 
   function handleOptionClick(option) {
     setValue({ value: option.label, update: true });

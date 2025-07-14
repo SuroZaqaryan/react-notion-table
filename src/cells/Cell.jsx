@@ -8,17 +8,19 @@ import DragHandleCell from './DragHandleCell';
 
 export default function Cell({
   value: initialValue,
-  row: { index },
-  column: { id, dataType, options },
+  row: { index, original },
+  column: { id, dataType },
   dataDispatch,
 }) {
+  const options = original.options || [];
+
   function getCellElement() {
     const cellProps = {
       initialValue,
       rowIndex: index,
       columnId: id,
       dataDispatch,
-      className: '' 
+      className: ''
     };
 
     switch (dataType) {
