@@ -199,14 +199,22 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 100%;
+  overflow-x: auto;
   gap: 5rem;
+  padding-right: 7.4rem;
   margin-top: 3rem;
+}
+
+.table-wrapper {
+  max-width: 100%;
 }
 
 .table {
   display: inline-block;
   border-spacing: 0;
   margin: 2rem auto;
+  padding-right: 2.5rem;
   height: fit-content;
 }
 
@@ -450,6 +458,7 @@ html {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  padding-left: 7.4rem;
 }
 
 .editable-title {

@@ -32,29 +32,27 @@ export function reducer(state, action) {
       const newData = [...state.data];
       const currentRow = newData[action.index - 1];
 
-      const matchingItem = exampleSpec.chapters
-        .flatMap(ch => ch.items || [])
-        .find(item => item.item_name === currentRow.item_name);
-
-      if (!matchingItem) return state;
-
-      const dopCharsItem = matchingItem.dop_chars?.find(
+      const dopCharsItem = state.dopChars.find(
         char => char.name === currentRow.name
       );
 
       if (!dopCharsItem) return state;
 
-      const usedValues = newData
-        .filter(row =>
+      const sameCharRows = newData.filter(
+        row =>
           row.name === currentRow.name &&
           row.item_name === currentRow.item_name
-        )
-        .map(row => row.value);
+      );
 
-      const alreadyAdded = dopCharsItem.values.some(v => usedValues.includes(v.value));
-      if (alreadyAdded) return state;
+      // Ограничение: максимум 2 строки на характеристику
+      if (sameCharRows.length >= 2) return state;
 
-      const nextValue = dopCharsItem.values[0];
+      const usedValues = sameCharRows.map(row => row.value);
+
+      const nextValue = dopCharsItem.values.find(
+        v => !usedValues.includes(v.value)
+      );
+
       if (!nextValue) return state;
 
       const newRow = {

@@ -17,6 +17,7 @@ function transformSpecToTables(spec) {
           }));
 
           return {
+            item_name: item.item_name,
             name: char.name,
             value: char.values[0].value,
             unit: char.unit || "",
@@ -30,6 +31,7 @@ function transformSpecToTables(spec) {
           itemName: item.item_name,
           okpd2: item.OKPD2,
           data: rows,
+          dopChars: item.dop_chars || [],
         });
       });
     });
@@ -42,13 +44,14 @@ function MainTableView() {
 
   return (
     <div className="table-group">
-      {tables.map(({ id, chapterName, itemName, okpd2, data }) => (
+      {tables.map(({ id, chapterName, itemName, okpd2, data, dopChars }) => (
         <TableWrapper
           key={id}
           chapterName={chapterName}
           itemName={itemName}
           okpd2={okpd2}
           data={data}
+          dopChars={dopChars}
         />
       ))}
     </div>

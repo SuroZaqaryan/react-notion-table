@@ -3,7 +3,7 @@ import Table from "./Table";
 import { reducer } from "../lib/reducer";
 import columns from "../columns/columns";
 
-function TableWrapper({ chapterName, itemName, okpd2, data }) {
+function TableWrapper({ chapterName, itemName, okpd2, data, dopChars }) {
   const [state, dispatch] = useReducer(reducer, {
     columns,
     data,
@@ -13,6 +13,7 @@ function TableWrapper({ chapterName, itemName, okpd2, data }) {
       itemName,
       okpd2,
     },
+    dopChars
   });
 
   useEffect(() => {
@@ -52,6 +53,7 @@ function TableWrapper({ chapterName, itemName, okpd2, data }) {
           />
         </p>
       </div>
+
       <Table
         columns={state.columns}
         data={state.data}
