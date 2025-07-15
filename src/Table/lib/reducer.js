@@ -186,6 +186,16 @@ export function reducer(state, action) {
         default:
           return state;
       }
+    case "update_metadata":
+      return {
+        ...state,
+        skipReset: true,
+        metadata: {
+          ...state.metadata,
+          [action.key]: action.value,
+        },
+      };
+
     case "update_column_header":
       const index = state.columns.findIndex(
         (column) => column.id === action.columnId

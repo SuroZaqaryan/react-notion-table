@@ -17,7 +17,6 @@ function transformSpecToTables(spec) {
           }));
 
           return {
-            item_name: item.item_name,
             name: char.name,
             value: char.values[0].value,
             unit: char.unit || "",
