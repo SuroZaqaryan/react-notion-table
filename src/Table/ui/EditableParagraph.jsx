@@ -1,13 +1,27 @@
 import { useState, useRef, useEffect } from 'react';
-import { Flex, Input, Typography } from 'antd';
-import { Pencil, WandSparkles } from 'lucide-react';
+import { Flex, Input, Typography, Button, theme } from 'antd';
+import { Pencil, WandSparkles, Sparkles, Plus, CircleArrowUp } from 'lucide-react';
 
 const { Text } = Typography;
 
+const suggestions = [
+    'Упростить язык',
+    'Сделать текст более официальным',
+    'Разбить на подпункты',
+    'Исправить шаблонные фразы',
+];
+
 function EditableParagraph({ value, onChange, label, as: Component = 'span', asProps = {} }) {
+    const { token } = theme.useToken();
+
     const [editing, setEditing] = useState(false);
     const [tempValue, setTempValue] = useState(value);
+    const [showPopup, setShowPopup] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const [selectedSuggestion, setSelectedSuggestion] = useState('');
     const inputRef = useRef(null);
+    const popupRef = useRef(null);
 
     const finishEditing = () => {
         setEditing(false);
@@ -20,43 +34,141 @@ function EditableParagraph({ value, onChange, label, as: Component = 'span', asP
         }
     }, [editing]);
 
-    return (
-        <Flex align="center" gap={8}>
-            <Flex style={{ position: 'relative', right: '2rem' }} gap={18}>
-                <WandSparkles
-                    style={{ cursor: 'pointer' }}
-                    size={16}
-                    color='#44403C'
-                />
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (popupRef.current && !popupRef.current.contains(e.target)) {
+                setShowPopup(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
-                <Pencil
-                    onClick={() => setEditing(true)}
-                    style={{ cursor: 'pointer' }}
-                    size={16}
-                    color='#44403C'
-                />
+    const applySuggestion = () => {
+        if (!selectedSuggestion) return;
+
+        setLoading(true);
+        // Эмуляция API-запроса
+        setTimeout(() => {
+            const fakeServerResponse = selectedSuggestion;
+            onChange(fakeServerResponse);
+            setTempValue(fakeServerResponse);
+            setShowPopup(false);
+            setLoading(false);
+        }, 1000);
+    };
+
+    return (
+        <div style={{ position: 'relative' }}>
+            <Flex align="center" gap={8}>
+                <Flex style={{ position: 'relative', right: '1.5rem' }} gap={14}>
+                    <Button
+                        type="text"
+                        onClick={() => setShowPopup(!showPopup)}
+                        style={{ background: showPopup ? '#E4E4E7' : '#fff' }}
+                        icon={
+                            <WandSparkles
+                                style={{ display: 'flex', cursor: 'pointer' }}
+                                size={16}
+                                color="#44403C"
+                            />
+                        }
+                    />
+
+                    <Button
+                        type="text"
+                        onClick={() => setEditing(true)}
+                        style={{ background: editing ? '#E4E4E7' : '#fff' }}
+
+                        icon={
+                            <Pencil
+                                style={{ display: 'flex', cursor: 'pointer' }}
+                                size={16}
+                                color="#44403C"
+                            />
+                        }
+                    />
+                </Flex>
+
+                {label && (
+                    <Text style={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
+                        {label}
+                    </Text>
+                )}
+
+                {editing ? (
+                    <Input
+                        ref={inputRef}
+                        value={tempValue}
+                        onChange={(e) => setTempValue(e.target.value)}
+                        style={{ minWidth: '100%' }}
+                        onPressEnter={finishEditing}
+                        onBlur={finishEditing}
+                        size="middle"
+                    />
+                ) : (
+                    <Component style={{ margin: 0, background: showPopup ? '#E4E4E7' : '#fff' }} {...asProps}>{value}</Component>
+                )}
             </Flex>
 
-            {label && (
-                <Text style={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
-                    {label}
-                </Text>
-            )}
+            {showPopup && (
+                <div
+                    ref={popupRef}
+                    style={{
+                        position: 'absolute',
+                        top: '100%',
+                        left: 40,
+                        zIndex: 1000,
+                        padding: 12,
+                        borderRadius: 8,
+                        marginTop: 0,
+                        width: 700,
+                    }}
+                >
+                    <Flex vertical gap={8}>
+                        <Flex align='center' style={{ boxShadow: token.boxShadowSecondary, background: '#fff', border: '1px solid #E4E4E7', padding: '8px 16px', borderRadius: 12 }} gap={6}>
+                            <Plus style={{ cursor: 'pointer' }} />
+                            <Input
+                                rows={4}
+                                value={selectedSuggestion}
+                                onChange={(e) => setSelectedSuggestion(e.target.value)}
+                                style={{ border: 'none', borderRadius: 4 }}
+                                placeholder="Напишите, что нужно исправить в этом тексте"
+                            />
 
-            {editing ? (
-                <Input
-                    ref={inputRef}
-                    value={tempValue}
-                    onChange={(e) => setTempValue(e.target.value)}
-                    style={{ minWidth: '100%' }}
-                    onPressEnter={finishEditing}
-                    onBlur={finishEditing}
-                    size="middle"
-                />
-            ) : (
-                <Component style={{ margin: 0 }} {...asProps}>{value}</Component>
+                            <Button
+                                type="text"
+                                loading={loading}
+                                icon={
+                                    <CircleArrowUp
+                                        color="#ffffff"
+                                        fill='#1c1c1c'
+                                        onClick={applySuggestion}
+                                        size={30}
+                                        strokeWidth={1}
+                                        style={{ cursor: 'pointer' }}
+                                    />
+                                }
+                            />
+                        </Flex>
+
+                        <Flex vertical style={{ boxShadow: token.boxShadowSecondary, background: '#fff', border: '1px solid #E4E4E7', borderRadius: 8 }}>
+                            {suggestions.map((suggestion) => (
+                                <Button
+                                    key={suggestion}
+                                    type="text"
+                                    style={{ textAlign: 'left', justifyContent: 'flex-start', padding: '24px 18px' }}
+                                    icon={<Sparkles style={{ display: 'flex' }} size={16} />}
+                                    onClick={() => setSelectedSuggestion(suggestion)}
+                                >
+                                    <Typography.Text style={{ fontSize: 16 }}>{suggestion}</Typography.Text>
+                                </Button>
+                            ))}
+                        </Flex>
+                    </Flex>
+                </div>
             )}
-        </Flex>
+        </div>
     );
 }
 

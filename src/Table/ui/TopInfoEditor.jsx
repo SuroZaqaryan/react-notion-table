@@ -1,25 +1,23 @@
 import "../styles/style.css";
+import { Typography } from 'antd';
+import EditableParagraph from "../ui/EditableParagraph";
 
 function TopInfoEditor({ date, address, onChange }) {
   return (
-    <div className="top-info">
-      <div className="top-info__field">
-        <strong>Дата:</strong>{" "}
-        <input
-          value={date}
-          onChange={(e) => onChange("date", e.target.value)}
-          className="editable-field"
-        />
-      </div>
-      
-      <div className="top-info__field">
-        <strong>Адрес:</strong>{" "}
-        <input
-          value={address}
-          onChange={(e) => onChange("address", e.target.value)}
-          className="editable-field"
-        />
-      </div>
+    <div className="info-block">
+      <EditableParagraph
+        value={address}
+        onChange={(val) => onChange("address", val)}
+        as={Typography.Title}
+        asProps={{ level: 3 }}
+      />
+
+      <EditableParagraph
+        value={date}
+        onChange={(val) => onChange("date", val)}
+        as={Typography.Title}
+        asProps={{ level: 4 }}
+      />
     </div>
   );
 }

@@ -275,6 +275,19 @@ html {
   height: 100%;
 }
 
+.name-col,
+.name-col .th,
+.name-col .th-content {
+  border-top-left-radius: 8px;
+}
+
+.unit-col,
+.unit-col .th,
+.unit-col .th-content {
+  border-top-right-radius: 8px;
+}
+
+
 .d-flex {
   display: flex;
 }
@@ -463,7 +476,7 @@ html {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  padding-left: 4rem;
+  padding-left: 2rem;
 }
 
 .editable-fields {
@@ -490,11 +503,11 @@ html {
   background: transparent;
 }
 
-.bottom-info,
-.top-info {
+.info-block {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   width: 100%;
-  padding-left: 7.5rem;
+  padding-left: 2rem;
+  max-width: 920px;
 }

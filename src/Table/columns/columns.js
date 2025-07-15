@@ -15,6 +15,7 @@ const columns = [
         label: "Название товара",
         accessor: "name",
         dataType: "text",
+        className: "name-col",
         options: []
     },
     {
@@ -31,6 +32,7 @@ const columns = [
         width: 160,
         accessor: "unit",
         dataType: "text",
+        className: "unit-col",
         options: []
     }
 ];
