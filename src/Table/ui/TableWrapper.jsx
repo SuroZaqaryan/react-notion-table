@@ -3,7 +3,8 @@ import Table from "./Table";
 import { reducer } from "../lib/reducer";
 import columns from "../columns/columns";
 import { Trash2 } from 'lucide-react';
-import { Button, Tooltip } from 'antd';
+import { Button, Tooltip, Typography } from 'antd';
+import EditableParagraph from "./EditableParagraph";
 
 function TableWrapper({ chapterName, itemName, okpd2, data, dopChars }) {
   const [state, dispatch] = useReducer(reducer, {
@@ -23,11 +24,11 @@ function TableWrapper({ chapterName, itemName, okpd2, data, dopChars }) {
     dispatch({ type: "enable_reset" });
   }, [state.data, state.columns]);
 
-  const handleChange = (key) => (e) => {
+  const handleMetadataChange = (key) => (value) => {
     dispatch({
       type: "update_metadata",
       key,
-      value: e.target.value,
+      value,
     });
   };
 
@@ -39,33 +40,30 @@ function TableWrapper({ chapterName, itemName, okpd2, data, dopChars }) {
     <div className="table-wrapper">
       <div className="editable-wrapper">
         <div className="editable-fields">
-          <input
+          <EditableParagraph
             value={state.metadata.chapterName}
-            onChange={handleChange("chapterName")}
-            className="editable-title"
+            onChange={handleMetadataChange("chapterName")}
+            as={Typography.Title}
+            asProps={{ level: 3 }}
           />
-          <p>
-            <strong>Изделие:</strong>{" "}
-            <input
-              value={state.metadata.itemName}
-              onChange={handleChange("itemName")}
-              className="editable-field"
-            />
-          </p>
-          <p>
-            <strong>ОКПД2:</strong>{" "}
-            <input
-              value={state.metadata.okpd2}
-              onChange={handleChange("okpd2")}
-              className="editable-field"
-            />
-          </p>
+
+          <EditableParagraph
+            value={state.metadata.itemName}
+            onChange={handleMetadataChange("itemName")}
+            as={Typography.Title}
+            asProps={{ level: 5 }}
+          />
+
+          <EditableParagraph
+            value={state.metadata.okpd2}
+            onChange={handleMetadataChange("okpd2")}
+            as={Typography.Title}
+            asProps={{ level: 5 }}
+          />
         </div>
 
         <div>
-          {
-            state.selectedRowIndices.length > 0 &&
-
+          {state.selectedRowIndices.length > 0 && (
             <Tooltip placement="top" title={`Выбрано строк: ${state.selectedRowIndices.length}`}>
               <Button
                 type="primary"
@@ -78,7 +76,7 @@ function TableWrapper({ chapterName, itemName, okpd2, data, dopChars }) {
                 Удалить
               </Button>
             </Tooltip>
-          }
+          )}
         </div>
       </div>
 
