@@ -1,4 +1,4 @@
-import { randomColor, shortId } from "../utils/utils";
+import { shortId } from "../utils/utils";
 
 export function reducer(state, action) {
   switch (action.type) {
@@ -43,13 +43,14 @@ export function reducer(state, action) {
         const allNameOptions = relevantDopChars.map(char => ({
           label: char.name,
           value: char.name,
+          backgroundColor: '#E4E4E7',
         }));
 
         const allValueOptions = relevantDopChars.flatMap(char =>
           char.values.map(v => ({
             label: v.value,
             value: v.value,
-            backgroundColor: randomColor(),
+            backgroundColor: '#E4E4E7',
           }))
         );
 
@@ -59,8 +60,8 @@ export function reducer(state, action) {
           value: '', // будет SelectCell
           unit: '',
           options: allValueOptions,
-          nameOptions: allNameOptions, 
-          isNewRow: true, 
+          nameOptions: allNameOptions,
+          isNewRow: true,
         };
 
         newData.splice(index + 1, 0, newRow);
@@ -159,7 +160,7 @@ export function reducer(state, action) {
               if (row[action.columnId]) {
                 options.push({
                   label: row[action.columnId],
-                  backgroundColor: randomColor(),
+                  backgroundColor: '#E4E4E7',
                 });
               }
             });

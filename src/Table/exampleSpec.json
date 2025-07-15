@@ -1,54 +1,1826 @@
 {
-  "chapters": [
+  "date": "ASD",
+  "address": "SOIDJA",
+  "characteristics": [
     {
       "chapter_name": "Характеристики товара",
-      "items": [
+      "item_name": "Настольный компьютер с процессором Intel i5",
+      "OKPD2": "26.20.16.110",
+      "main_chars": [
         {
-          "item_name": "Станок X100",
-          "OKPD2": "28.41.10",
-          "main_chars": [
-            {"name": "Длина", "values": [{"value": "150"}, {"value": "120"}], "unit": "см"},
-            {"name": "Ширина", "values": [{"value": "80"}], "unit": "см"},
-            {"name": "Высота", "values": [{"value": "120"}], "unit": "см"},
-            {"name": "Мощность", "values": [{"value": "750"}], "unit": "Вт"},
-            {"name": "Напряжение", "values": [{"value": "220"}], "unit": "В"}
-          ],
-          "dop_chars": [
-            {"name": "Длина", "values": [{"value": "140"}, {"value": "160"}]},
-            {"name": "Ширина", "values": [{"value": "75"}]},
-            {"name": "Высота", "values": [{"value": "110"}, {"value": "130"}]},
-            {"name": "Мощность", "values": [{"value": "800"}, {"value": "700"}]},
-            {"name": "Напряжение", "values": [{"value": "230"}]}
+          "name": "Тип процессора",
+          "values": [
+            {
+              "value": "Intel Core i5 10-го поколения",
+              "is_popular": true
+            },
+            {
+              "value": "Intel Core i5 11-го поколения",
+              "is_popular": false
+            },
+            {
+              "value": "Intel Core i5 9-го поколения",
+              "is_popular": false
+            },
+            {
+              "value": "Intel Core i5 12-го поколения",
+              "is_popular": false
+            },
+            {
+              "value": "Intel Core i5 8-го поколения",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Объем оперативной памяти",
+          "unit": "ГБ",
+          "values": [
+            {
+              "value": "8",
+              "is_popular": true
+            },
+            {
+              "value": "16",
+              "is_popular": false
+            },
+            {
+              "value": "12",
+              "is_popular": false
+            },
+            {
+              "value": "32",
+              "is_popular": false
+            },
+            {
+              "value": "4",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Тип оперативной памяти",
+          "values": [
+            {
+              "value": "DDR4",
+              "is_popular": true
+            },
+            {
+              "value": "DDR3",
+              "is_popular": false
+            },
+            {
+              "value": "DDR5",
+              "is_popular": false
+            },
+            {
+              "value": "LPDDR4",
+              "is_popular": false
+            },
+            {
+              "value": "LPDDR3",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Объем накопителя",
+          "unit": "ГБ",
+          "values": [
+            {
+              "value": "512",
+              "is_popular": true
+            },
+            {
+              "value": "256",
+              "is_popular": false
+            },
+            {
+              "value": "1024",
+              "is_popular": false
+            },
+            {
+              "value": "2048",
+              "is_popular": false
+            },
+            {
+              "value": "128",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Тип накопителя",
+          "values": [
+            {
+              "value": "SSD",
+              "is_popular": true
+            },
+            {
+              "value": "HDD",
+              "is_popular": false
+            },
+            {
+              "value": "SSD+HDD",
+              "is_popular": false
+            },
+            {
+              "value": "NVMe SSD",
+              "is_popular": false
+            },
+            {
+              "value": "eMMC",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Графический адаптер",
+          "values": [
+            {
+              "value": "Интегрированный Intel UHD Graphics",
+              "is_popular": true
+            },
+            {
+              "value": "NVIDIA GeForce GT 1030",
+              "is_popular": false
+            },
+            {
+              "value": "AMD Radeon RX 550",
+              "is_popular": false
+            },
+            {
+              "value": "Интегрированный Intel Iris Xe",
+              "is_popular": false
+            },
+            {
+              "value": "NVIDIA GeForce GTX 1650",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Операционная система",
+          "values": [
+            {
+              "value": "Windows 10 Pro",
+              "is_popular": true
+            },
+            {
+              "value": "Windows 11 Pro",
+              "is_popular": false
+            },
+            {
+              "value": "Без ОС",
+              "is_popular": false
+            },
+            {
+              "value": "Linux",
+              "is_popular": false
+            },
+            {
+              "value": "Windows 10 Home",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Количество USB портов",
+          "unit": "шт",
+          "values": [
+            {
+              "value": "6",
+              "is_popular": true
+            },
+            {
+              "value": "8",
+              "is_popular": false
+            },
+            {
+              "value": "4",
+              "is_popular": false
+            },
+            {
+              "value": "10",
+              "is_popular": false
+            },
+            {
+              "value": "12",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Наличие HDMI",
+          "values": [
+            {
+              "value": "Да",
+              "is_popular": true
+            },
+            {
+              "value": "Нет",
+              "is_popular": false
+            },
+            {
+              "value": "Через переходник",
+              "is_popular": false
+            },
+            {
+              "value": "DisplayPort вместо HDMI",
+              "is_popular": false
+            },
+            {
+              "value": "VGA вместо HDMI",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Сетевой интерфейс",
+          "values": [
+            {
+              "value": "Ethernet 1 Гбит/с",
+              "is_popular": true
+            },
+            {
+              "value": "Ethernet 100 Мбит/с",
+              "is_popular": false
+            },
+            {
+              "value": "Wi-Fi 802.11ac",
+              "is_popular": false
+            },
+            {
+              "value": "Wi-Fi 802.11n",
+              "is_popular": false
+            },
+            {
+              "value": "Bluetooth 4.2",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Форм-фактор корпуса",
+          "values": [
+            {
+              "value": "Mini Tower",
+              "is_popular": true
+            },
+            {
+              "value": "Micro Tower",
+              "is_popular": false
+            },
+            {
+              "value": "Desktop",
+              "is_popular": false
+            },
+            {
+              "value": "Small Form Factor",
+              "is_popular": false
+            },
+            {
+              "value": "Ultra Small Form Factor",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Габариты корпуса",
+          "unit": "мм",
+          "values": [
+            {
+              "value": "350x170x360",
+              "is_popular": true
+            },
+            {
+              "value": "400x180x380",
+              "is_popular": false
+            },
+            {
+              "value": "300x150x320",
+              "is_popular": false
+            },
+            {
+              "value": "420x200x400",
+              "is_popular": false
+            },
+            {
+              "value": "320x140x300",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Цвет корпуса",
+          "values": [
+            {
+              "value": "Черный",
+              "is_popular": true
+            },
+            {
+              "value": "Серый",
+              "is_popular": false
+            },
+            {
+              "value": "Белый",
+              "is_popular": false
+            },
+            {
+              "value": "Темно-серый",
+              "is_popular": false
+            },
+            {
+              "value": "Серебристый",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Питание блока питания",
+          "unit": "Вт",
+          "values": [
+            {
+              "value": "300",
+              "is_popular": true
+            },
+            {
+              "value": "350",
+              "is_popular": false
+            },
+            {
+              "value": "250",
+              "is_popular": false
+            },
+            {
+              "value": "400",
+              "is_popular": false
+            },
+            {
+              "value": "500",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Комплектация",
+          "values": [
+            {
+              "value": "Клавиатура и мышь в комплекте",
+              "is_popular": true
+            },
+            {
+              "value": "Без клавиатуры и мыши",
+              "is_popular": false
+            },
+            {
+              "value": "С кабелем питания",
+              "is_popular": false
+            },
+            {
+              "value": "С предустановленным ПО",
+              "is_popular": false
+            },
+            {
+              "value": "С документацией",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Гарантийный срок",
+          "unit": "мес",
+          "values": [
+            {
+              "value": "12",
+              "is_popular": true
+            },
+            {
+              "value": "24",
+              "is_popular": false
+            },
+            {
+              "value": "36",
+              "is_popular": false
+            },
+            {
+              "value": "18",
+              "is_popular": false
+            },
+            {
+              "value": "6",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Температура эксплуатации",
+          "unit": "°C",
+          "values": [
+            {
+              "value": "0...+35",
+              "is_popular": true
+            },
+            {
+              "value": "-10...+40",
+              "is_popular": false
+            },
+            {
+              "value": "+5...+45",
+              "is_popular": false
+            },
+            {
+              "value": "-5...+35",
+              "is_popular": false
+            },
+            {
+              "value": "0...+40",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Уровень шума",
+          "unit": "дБ",
+          "values": [
+            {
+              "value": "до 25",
+              "is_popular": true
+            },
+            {
+              "value": "до 30",
+              "is_popular": false
+            },
+            {
+              "value": "до 20",
+              "is_popular": false
+            },
+            {
+              "value": "до 35",
+              "is_popular": false
+            },
+            {
+              "value": "до 40",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Сертификация",
+          "values": [
+            {
+              "value": "EAC",
+              "is_popular": true
+            },
+            {
+              "value": "CE",
+              "is_popular": false
+            },
+            {
+              "value": "RoHS",
+              "is_popular": false
+            },
+            {
+              "value": "ISO 9001",
+              "is_popular": false
+            },
+            {
+              "value": "ГОСТ",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Условия хранения",
+          "values": [
+            {
+              "value": "В сухом помещении",
+              "is_popular": true
+            },
+            {
+              "value": "При температуре от 0 до +40°C",
+              "is_popular": false
+            },
+            {
+              "value": "В оригинальной упаковке",
+              "is_popular": false
+            },
+            {
+              "value": "Без воздействия прямых солнечных лучей",
+              "is_popular": false
+            },
+            {
+              "value": "Вентилируемое помещение",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Вес",
+          "unit": "кг",
+          "values": [
+            {
+              "value": "5",
+              "is_popular": true
+            },
+            {
+              "value": "6",
+              "is_popular": false
+            },
+            {
+              "value": "4",
+              "is_popular": false
+            },
+            {
+              "value": "7",
+              "is_popular": false
+            },
+            {
+              "value": "8",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Габариты упаковки",
+          "unit": "мм",
+          "values": [
+            {
+              "value": "400x250x500",
+              "is_popular": true
+            },
+            {
+              "value": "420x260x520",
+              "is_popular": false
+            },
+            {
+              "value": "380x240x480",
+              "is_popular": false
+            },
+            {
+              "value": "450x270x550",
+              "is_popular": false
+            },
+            {
+              "value": "410x255x510",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Требования к установке",
+          "values": [
+            {
+              "value": "На ровной поверхности",
+              "is_popular": true
+            },
+            {
+              "value": "Вентилируемое помещение",
+              "is_popular": false
+            },
+            {
+              "value": "Вдали от источников тепла",
+              "is_popular": false
+            },
+            {
+              "value": "Без вибрации",
+              "is_popular": false
+            },
+            {
+              "value": "Без попадания влаги",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Совместимость с мониторами",
+          "values": [
+            {
+              "value": "HDMI, VGA, DisplayPort",
+              "is_popular": true
+            },
+            {
+              "value": "VGA",
+              "is_popular": false
+            },
+            {
+              "value": "HDMI",
+              "is_popular": false
+            },
+            {
+              "value": "DisplayPort",
+              "is_popular": false
+            },
+            {
+              "value": "DVI",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Энергопотребление",
+          "unit": "Вт",
+          "values": [
+            {
+              "value": "до 65",
+              "is_popular": true
+            },
+            {
+              "value": "до 80",
+              "is_popular": false
+            },
+            {
+              "value": "до 100",
+              "is_popular": false
+            },
+            {
+              "value": "до 120",
+              "is_popular": false
+            },
+            {
+              "value": "до 150",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Ресурс работы",
+          "unit": "ч",
+          "values": [
+            {
+              "value": "50000",
+              "is_popular": true
+            },
+            {
+              "value": "40000",
+              "is_popular": false
+            },
+            {
+              "value": "60000",
+              "is_popular": false
+            },
+            {
+              "value": "70000",
+              "is_popular": false
+            },
+            {
+              "value": "80000",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Уровень энергоэффективности",
+          "values": [
+            {
+              "value": "Energy Star",
+              "is_popular": true
+            },
+            {
+              "value": "80 PLUS",
+              "is_popular": false
+            },
+            {
+              "value": "EPEAT Bronze",
+              "is_popular": false
+            },
+            {
+              "value": "EPEAT Silver",
+              "is_popular": false
+            },
+            {
+              "value": "EPEAT Gold",
+              "is_popular": false
+            }
+          ]
+        }
+      ],
+      "dop_chars": [
+        {
+          "name": "Возможность расширения ОЗУ",
+          "values": [
+            {
+              "value": "Да",
+              "is_popular": true
+            },
+            {
+              "value": "Нет",
+              "is_popular": false
+            },
+            {
+              "value": "До 64 ГБ",
+              "is_popular": false
+            },
+            {
+              "value": "До 32 ГБ",
+              "is_popular": false
+            },
+            {
+              "value": "До 128 ГБ",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Наличие оптического привода",
+          "values": [
+            {
+              "value": "Нет",
+              "is_popular": true
+            },
+            {
+              "value": "Да",
+              "is_popular": false
+            },
+            {
+              "value": "Внешний привод",
+              "is_popular": false
+            },
+            {
+              "value": "DVD-RW",
+              "is_popular": false
+            },
+            {
+              "value": "Blu-ray",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Возможность установки дополнительного накопителя",
+          "values": [
+            {
+              "value": "Да",
+              "is_popular": true
+            },
+            {
+              "value": "Нет",
+              "is_popular": false
+            },
+            {
+              "value": "До 2 дополнительных накопителей",
+              "is_popular": false
+            },
+            {
+              "value": "Только SSD",
+              "is_popular": false
+            },
+            {
+              "value": "Только HDD",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Поддержка TPM",
+          "values": [
+            {
+              "value": "Да",
+              "is_popular": true
+            },
+            {
+              "value": "Нет",
+              "is_popular": false
+            },
+            {
+              "value": "TPM 2.0",
+              "is_popular": false
+            },
+            {
+              "value": "TPM 1.2",
+              "is_popular": false
+            },
+            {
+              "value": "Встроенный",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Возможность установки видеокарты",
+          "values": [
+            {
+              "value": "Да",
+              "is_popular": true
+            },
+            {
+              "value": "Нет",
+              "is_popular": false
+            },
+            {
+              "value": "Low Profile",
+              "is_popular": false
+            },
+            {
+              "value": "Full Size",
+              "is_popular": false
+            },
+            {
+              "value": "Внешняя видеокарта",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Поддержка Wake-on-LAN",
+          "values": [
+            {
+              "value": "Да",
+              "is_popular": true
+            },
+            {
+              "value": "Нет",
+              "is_popular": false
+            },
+            {
+              "value": "Только через BIOS",
+              "is_popular": false
+            },
+            {
+              "value": "Только через ОС",
+              "is_popular": false
+            },
+            {
+              "value": "С настройкой через ПО",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Возможность крепления VESA",
+          "values": [
+            {
+              "value": "Нет",
+              "is_popular": true
+            },
+            {
+              "value": "Да",
+              "is_popular": false
+            },
+            {
+              "value": "100x100 мм",
+              "is_popular": false
+            },
+            {
+              "value": "75x75 мм",
+              "is_popular": false
+            },
+            {
+              "value": "120x120 мм",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Возможность апгрейда BIOS",
+          "values": [
+            {
+              "value": "Да",
+              "is_popular": true
+            },
+            {
+              "value": "Нет",
+              "is_popular": false
+            },
+            {
+              "value": "Только через USB",
+              "is_popular": false
+            },
+            {
+              "value": "Только через интернет",
+              "is_popular": false
+            },
+            {
+              "value": "Только в сервисном центре",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Возможность установки дополнительного вентилятора",
+          "values": [
+            {
+              "value": "Да",
+              "is_popular": true
+            },
+            {
+              "value": "Нет",
+              "is_popular": false
+            },
+            {
+              "value": "1 дополнительный вентилятор",
+              "is_popular": false
+            },
+            {
+              "value": "2 дополнительных вентилятора",
+              "is_popular": false
+            },
+            {
+              "value": "Только штатный вентилятор",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Возможность установки карты расширения",
+          "values": [
+            {
+              "value": "Да",
+              "is_popular": true
+            },
+            {
+              "value": "Нет",
+              "is_popular": false
+            },
+            {
+              "value": "PCIe x16",
+              "is_popular": false
+            },
+            {
+              "value": "PCIe x1",
+              "is_popular": false
+            },
+            {
+              "value": "M.2",
+              "is_popular": false
+            }
           ]
         }
       ]
     },
-  {
+    {
       "chapter_name": "Характеристики товара",
-      "items": [
+      "item_name": "Лазерный принтер черно-белый",
+      "OKPD2": "26.20.17.120",
+      "main_chars": [
         {
-          "item_name": "Станок X1001",
-          "OKPD2": "28.41.10",
-          "main_chars": [
-            {"name": "Длина", "values": [{"value": "150"}, {"value": "120"}], "unit": "см"},
-            {"name": "Ширина", "values": [{"value": "80"}], "unit": "см"},
-            {"name": "Высота", "values": [{"value": "120"}], "unit": "см"},
-            {"name": "Мощность", "values": [{"value": "750"}], "unit": "Вт"},
-            {"name": "Напряжение", "values": [{"value": "220"}], "unit": "В"}
-          ],
-          "dop_chars": [
-            {"name": "Длина", "values": [{"value": "140"}, {"value": "160"}]},
-            {"name": "Ширина", "values": [{"value": "75"}]},
-            {"name": "Высота", "values": [{"value": "110"}, {"value": "130"}]},
-            {"name": "Мощность", "values": [{"value": "800"}, {"value": "700"}]},
-            {"name": "Напряжение", "values": [{"value": "230"}]}
+          "name": "Тип печати",
+          "values": [
+            {
+              "value": "Лазерная монохромная",
+              "is_popular": true
+            },
+            {
+              "value": "Светодиодная монохромная",
+              "is_popular": false
+            },
+            {
+              "value": "Лазерная цветная",
+              "is_popular": false
+            },
+            {
+              "value": "Струйная монохромная",
+              "is_popular": false
+            },
+            {
+              "value": "Термопечать",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Максимальный формат бумаги",
+          "values": [
+            {
+              "value": "A4",
+              "is_popular": true
+            },
+            {
+              "value": "A3",
+              "is_popular": false
+            },
+            {
+              "value": "A5",
+              "is_popular": false
+            },
+            {
+              "value": "B5",
+              "is_popular": false
+            },
+            {
+              "value": "Letter",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Разрешение печати",
+          "unit": "dpi",
+          "values": [
+            {
+              "value": "1200x1200",
+              "is_popular": true
+            },
+            {
+              "value": "600x600",
+              "is_popular": false
+            },
+            {
+              "value": "2400x600",
+              "is_popular": false
+            },
+            {
+              "value": "600x1200",
+              "is_popular": false
+            },
+            {
+              "value": "1200x600",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Скорость печати (ч/б)",
+          "unit": "стр/мин",
+          "values": [
+            {
+              "value": "20",
+              "is_popular": true
+            },
+            {
+              "value": "18",
+              "is_popular": false
+            },
+            {
+              "value": "22",
+              "is_popular": false
+            },
+            {
+              "value": "24",
+              "is_popular": false
+            },
+            {
+              "value": "16",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Время выхода первого отпечатка",
+          "unit": "сек",
+          "values": [
+            {
+              "value": "8",
+              "is_popular": true
+            },
+            {
+              "value": "7",
+              "is_popular": false
+            },
+            {
+              "value": "10",
+              "is_popular": false
+            },
+            {
+              "value": "9",
+              "is_popular": false
+            },
+            {
+              "value": "12",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Объем памяти принтера",
+          "unit": "МБ",
+          "values": [
+            {
+              "value": "64",
+              "is_popular": true
+            },
+            {
+              "value": "128",
+              "is_popular": false
+            },
+            {
+              "value": "32",
+              "is_popular": false
+            },
+            {
+              "value": "256",
+              "is_popular": false
+            },
+            {
+              "value": "512",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Интерфейсы подключения",
+          "values": [
+            {
+              "value": "USB 2.0",
+              "is_popular": true
+            },
+            {
+              "value": "Wi-Fi",
+              "is_popular": false
+            },
+            {
+              "value": "Ethernet",
+              "is_popular": false
+            },
+            {
+              "value": "USB 3.0",
+              "is_popular": false
+            },
+            {
+              "value": "Bluetooth",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Ресурс картриджа",
+          "unit": "стр",
+          "values": [
+            {
+              "value": "1500",
+              "is_popular": true
+            },
+            {
+              "value": "1200",
+              "is_popular": false
+            },
+            {
+              "value": "2000",
+              "is_popular": false
+            },
+            {
+              "value": "2500",
+              "is_popular": false
+            },
+            {
+              "value": "1000",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Поддержка ОС",
+          "values": [
+            {
+              "value": "Windows, Linux, MacOS",
+              "is_popular": true
+            },
+            {
+              "value": "Windows",
+              "is_popular": false
+            },
+            {
+              "value": "Linux",
+              "is_popular": false
+            },
+            {
+              "value": "MacOS",
+              "is_popular": false
+            },
+            {
+              "value": "Android",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Габариты",
+          "unit": "мм",
+          "values": [
+            {
+              "value": "370x360x250",
+              "is_popular": true
+            },
+            {
+              "value": "400x398x255",
+              "is_popular": false
+            },
+            {
+              "value": "350x340x220",
+              "is_popular": false
+            },
+            {
+              "value": "385x343x255",
+              "is_popular": false
+            },
+            {
+              "value": "410x295x244",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Вес",
+          "unit": "кг",
+          "values": [
+            {
+              "value": "7",
+              "is_popular": true
+            },
+            {
+              "value": "6",
+              "is_popular": false
+            },
+            {
+              "value": "8",
+              "is_popular": false
+            },
+            {
+              "value": "5",
+              "is_popular": false
+            },
+            {
+              "value": "9",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Цвет корпуса",
+          "values": [
+            {
+              "value": "Белый",
+              "is_popular": true
+            },
+            {
+              "value": "Черный",
+              "is_popular": false
+            },
+            {
+              "value": "Серый",
+              "is_popular": false
+            },
+            {
+              "value": "Темно-серый",
+              "is_popular": false
+            },
+            {
+              "value": "Серебристый",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Питание",
+          "unit": "В",
+          "values": [
+            {
+              "value": "220",
+              "is_popular": true
+            },
+            {
+              "value": "110",
+              "is_popular": false
+            },
+            {
+              "value": "240",
+              "is_popular": false
+            },
+            {
+              "value": "100",
+              "is_popular": false
+            },
+            {
+              "value": "230",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Потребляемая мощность",
+          "unit": "Вт",
+          "values": [
+            {
+              "value": "400",
+              "is_popular": true
+            },
+            {
+              "value": "350",
+              "is_popular": false
+            },
+            {
+              "value": "300",
+              "is_popular": false
+            },
+            {
+              "value": "250",
+              "is_popular": false
+            },
+            {
+              "value": "450",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Уровень шума",
+          "unit": "дБ",
+          "values": [
+            {
+              "value": "до 50",
+              "is_popular": true
+            },
+            {
+              "value": "до 55",
+              "is_popular": false
+            },
+            {
+              "value": "до 45",
+              "is_popular": false
+            },
+            {
+              "value": "до 60",
+              "is_popular": false
+            },
+            {
+              "value": "до 40",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Ресурс печки",
+          "unit": "стр",
+          "values": [
+            {
+              "value": "100000",
+              "is_popular": true
+            },
+            {
+              "value": "80000",
+              "is_popular": false
+            },
+            {
+              "value": "120000",
+              "is_popular": false
+            },
+            {
+              "value": "60000",
+              "is_popular": false
+            },
+            {
+              "value": "50000",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Температура эксплуатации",
+          "unit": "°C",
+          "values": [
+            {
+              "value": "+10...+32",
+              "is_popular": true
+            },
+            {
+              "value": "0...+40",
+              "is_popular": false
+            },
+            {
+              "value": "+5...+35",
+              "is_popular": false
+            },
+            {
+              "value": "-10...+45",
+              "is_popular": false
+            },
+            {
+              "value": "0...+50",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Сертификация",
+          "values": [
+            {
+              "value": "EAC",
+              "is_popular": true
+            },
+            {
+              "value": "CE",
+              "is_popular": false
+            },
+            {
+              "value": "RoHS",
+              "is_popular": false
+            },
+            {
+              "value": "ISO 9001",
+              "is_popular": false
+            },
+            {
+              "value": "ГОСТ",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Габариты упаковки",
+          "unit": "мм",
+          "values": [
+            {
+              "value": "450x400x350",
+              "is_popular": true
+            },
+            {
+              "value": "470x420x370",
+              "is_popular": false
+            },
+            {
+              "value": "430x390x340",
+              "is_popular": false
+            },
+            {
+              "value": "480x410x360",
+              "is_popular": false
+            },
+            {
+              "value": "460x405x355",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Комплектация",
+          "values": [
+            {
+              "value": "Картридж, кабель питания, USB-кабель",
+              "is_popular": true
+            },
+            {
+              "value": "Картридж",
+              "is_popular": false
+            },
+            {
+              "value": "Картридж, кабель питания",
+              "is_popular": false
+            },
+            {
+              "value": "Картридж, документация",
+              "is_popular": false
+            },
+            {
+              "value": "Картридж, диск с ПО",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Условия хранения",
+          "values": [
+            {
+              "value": "В сухом помещении",
+              "is_popular": true
+            },
+            {
+              "value": "В оригинальной упаковке",
+              "is_popular": false
+            },
+            {
+              "value": "При температуре от 0 до +40°C",
+              "is_popular": false
+            },
+            {
+              "value": "Без воздействия солнечных лучей",
+              "is_popular": false
+            },
+            {
+              "value": "Вентилируемое помещение",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Требования к установке",
+          "values": [
+            {
+              "value": "На ровной поверхности",
+              "is_popular": true
+            },
+            {
+              "value": "Вдали от источников тепла",
+              "is_popular": false
+            },
+            {
+              "value": "Без вибрации",
+              "is_popular": false
+            },
+            {
+              "value": "Без попадания влаги",
+              "is_popular": false
+            },
+            {
+              "value": "Вентилируемое помещение",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Ресурс работы",
+          "unit": "ч",
+          "values": [
+            {
+              "value": "50000",
+              "is_popular": true
+            },
+            {
+              "value": "40000",
+              "is_popular": false
+            },
+            {
+              "value": "60000",
+              "is_popular": false
+            },
+            {
+              "value": "70000",
+              "is_popular": false
+            },
+            {
+              "value": "80000",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Энергопотребление в режиме ожидания",
+          "unit": "Вт",
+          "values": [
+            {
+              "value": "до 2",
+              "is_popular": true
+            },
+            {
+              "value": "до 1",
+              "is_popular": false
+            },
+            {
+              "value": "до 3",
+              "is_popular": false
+            },
+            {
+              "value": "до 5",
+              "is_popular": false
+            },
+            {
+              "value": "до 10",
+              "is_popular": false
+            }
+          ]
+        }
+      ],
+      "dop_chars": [
+        {
+          "name": "Дуплекс (автоматическая двусторонняя печать)",
+          "values": [
+            {
+              "value": "Нет",
+              "is_popular": true
+            },
+            {
+              "value": "Да",
+              "is_popular": false
+            },
+            {
+              "value": "Ручной дуплекс",
+              "is_popular": false
+            },
+            {
+              "value": "Опционально",
+              "is_popular": false
+            },
+            {
+              "value": "Модуль дуплекса приобретается отдельно",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Поддержка мобильной печати",
+          "values": [
+            {
+              "value": "Нет",
+              "is_popular": true
+            },
+            {
+              "value": "Да",
+              "is_popular": false
+            },
+            {
+              "value": "Через Wi-Fi Direct",
+              "is_popular": false
+            },
+            {
+              "value": "Через приложение",
+              "is_popular": false
+            },
+            {
+              "value": "Через Bluetooth",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Возможность подключения к сети Ethernet",
+          "values": [
+            {
+              "value": "Нет",
+              "is_popular": true
+            },
+            {
+              "value": "Да",
+              "is_popular": false
+            },
+            {
+              "value": "Опционально",
+              "is_popular": false
+            },
+            {
+              "value": "Через внешний адаптер",
+              "is_popular": false
+            },
+            {
+              "value": "Через Wi-Fi",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Возможность заправки картриджа",
+          "values": [
+            {
+              "value": "Да",
+              "is_popular": true
+            },
+            {
+              "value": "Нет",
+              "is_popular": false
+            },
+            {
+              "value": "Только оригинальный картридж",
+              "is_popular": false
+            },
+            {
+              "value": "Только сервисная заправка",
+              "is_popular": false
+            },
+            {
+              "value": "Совместимые картриджи",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Поддержка Google Cloud Print",
+          "values": [
+            {
+              "value": "Нет",
+              "is_popular": true
+            },
+            {
+              "value": "Да",
+              "is_popular": false
+            },
+            {
+              "value": "Опционально",
+              "is_popular": false
+            },
+            {
+              "value": "Через обновление ПО",
+              "is_popular": false
+            },
+            {
+              "value": "Через сторонние приложения",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Возможность использования совместимых картриджей",
+          "values": [
+            {
+              "value": "Да",
+              "is_popular": true
+            },
+            {
+              "value": "Нет",
+              "is_popular": false
+            },
+            {
+              "value": "Только оригинальные",
+              "is_popular": false
+            },
+            {
+              "value": "Совместимые по сертификату",
+              "is_popular": false
+            },
+            {
+              "value": "Совместимые по гарантии",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Возможность печати без ПК",
+          "values": [
+            {
+              "value": "Нет",
+              "is_popular": true
+            },
+            {
+              "value": "Да",
+              "is_popular": false
+            },
+            {
+              "value": "Через USB-накопитель",
+              "is_popular": false
+            },
+            {
+              "value": "Через мобильное приложение",
+              "is_popular": false
+            },
+            {
+              "value": "Через облако",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Возможность установки дополнительных лотков",
+          "values": [
+            {
+              "value": "Нет",
+              "is_popular": true
+            },
+            {
+              "value": "Да",
+              "is_popular": false
+            },
+            {
+              "value": "1 дополнительный лоток",
+              "is_popular": false
+            },
+            {
+              "value": "2 дополнительных лотка",
+              "is_popular": false
+            },
+            {
+              "value": "Опционально",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Возможность блокировки панели управления",
+          "values": [
+            {
+              "value": "Нет",
+              "is_popular": true
+            },
+            {
+              "value": "Да",
+              "is_popular": false
+            },
+            {
+              "value": "Опционально",
+              "is_popular": false
+            },
+            {
+              "value": "Только через ПО",
+              "is_popular": false
+            },
+            {
+              "value": "Только через сервисный режим",
+              "is_popular": false
+            }
+          ]
+        },
+        {
+          "name": "Возможность обновления ПО",
+          "values": [
+            {
+              "value": "Да",
+              "is_popular": true
+            },
+            {
+              "value": "Нет",
+              "is_popular": false
+            },
+            {
+              "value": "Только через интернет",
+              "is_popular": false
+            },
+            {
+              "value": "Только через USB",
+              "is_popular": false
+            },
+            {
+              "value": "Только в сервисном центре",
+              "is_popular": false
+            }
           ]
         }
       ]
-    },
-    {
-      "chapter_name": "Оплата",
-      "description": "100% предоплата."
     }
   ]
 }

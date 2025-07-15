@@ -4,8 +4,12 @@ export default function Badge({ value, backgroundColor }) {
       className="font-weight-400 d-inline-block color-grey-800 border-radius-sm text-transform-capitalize"
       style={{
         backgroundColor: backgroundColor,
-        padding: '2px 6px',
+        padding: '3px 7px',
         cursor: 'pointer',
+        overflow: 'hidden',
+        display: 'inline-block',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
       }}
     >
       {value}

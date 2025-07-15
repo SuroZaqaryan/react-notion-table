@@ -2,10 +2,6 @@ export function shortId() {
   return '_' + Math.random().toString(36).substr(2, 9);
 }
 
-export function randomColor() {
-  return `hsl(${Math.floor(Math.random() * 360)}, 95%, 90%)`;
-}
-
 export const ActionTypes = Object.freeze({
   ADD_OPTION_TO_COLUMN: 'add_option_to_column',
   UPDATE_COLUMN_TYPE: 'update_column_type',

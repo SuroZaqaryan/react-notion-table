@@ -4,7 +4,7 @@ import { usePopper } from 'react-popper';
 import Badge from '../ui/Badge';
 import { grey } from '../utils/colors';
 import { Plus } from 'lucide-react';
-import { ActionTypes, randomColor } from '../utils/utils';
+import { ActionTypes } from '../utils/utils';
 
 export default function SelectCell({
   initialValue,
@@ -72,7 +72,7 @@ export default function SelectCell({
           rowIndex,
           option: {
             label: newLabel,
-            backgroundColor: randomColor(),
+            backgroundColor: '#E4E4E7',
           }
         });
 
@@ -91,7 +91,7 @@ export default function SelectCell({
         rowIndex,
         option: {
           label: newLabel,
-          backgroundColor: randomColor(),
+          backgroundColor: '#E4E4E7',
         }
       });
 
@@ -145,18 +145,6 @@ export default function SelectCell({
               className="d-flex flex-wrap-wrap"
               style={{ marginTop: '-0.5rem' }}
             >
-              {options.map(option => (
-                <div
-                  key={option.label}
-                  className="cursor-pointer mr-5 mt-5"
-                  onClick={() => handleOptionClick(option)}
-                >
-                  <Badge
-                    value={option.label}
-                    backgroundColor={option.backgroundColor}
-                  />
-                </div>
-              ))}
               {showAdd && (
                 <div
                   key="add-option-input"
@@ -164,6 +152,7 @@ export default function SelectCell({
                   style={{
                     width: 120,
                     padding: '2px 4px',
+                    lineHeight: 1.5
                   }}
                 >
                   <input
@@ -182,13 +171,26 @@ export default function SelectCell({
               >
                 <Badge
                   value={
-                    <span className="svg-icon-sm svg-text">
-                      <Plus />
+                    <span className="svg-icon-sm svg-text" style={{padding: 3, color: '#fff', fontSize: 14}}>
+                     Добавить <Plus style={{stroke: '#fff'}}/>
                     </span>
                   }
-                  backgroundColor={grey(200)}
+                  backgroundColor={'#44403C'}
                 />
               </div>
+              {options.map(option => (
+                <div
+                  key={option.label}
+                  className="cursor-pointer mr-5 mt-5"
+                  onClick={() => handleOptionClick(option)}
+                >
+                  <Badge
+                    value={option.label}
+                    backgroundColor={option.backgroundColor}
+                  />
+                </div>
+              ))}
+
             </div>
           </div>,
           getPortalRoot()  // Use our safe getter function

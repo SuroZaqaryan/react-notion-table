@@ -1,40 +1,38 @@
 import "./styles/style.css";
 import exampleSpec from "./exampleSpec.json";
-import { randomColor } from "./utils/utils";
 import TableWrapper from "./ui/TableWrapper";
 
 function transformSpecToTables(spec) {
   const tables = [];
 
-  spec.chapters
-    .filter(ch => Array.isArray(ch.items))
-    .forEach(chapter => {
-      chapter.items.forEach(item => {
-        const rows = item.main_chars.map(char => {
-          const options = char.values.map(v => ({
-            label: v.value,
-            backgroundColor: randomColor(),
-          }));
+  spec.characteristics?.forEach(item => {
+    const rows = item.main_chars.map(char => {
+      const options = char.values.map(v => ({
+        label: v.value,
+        value: v.value,
+        backgroundColor: '#E4E4E7',
+      }));
 
-          return {
-            item_name: item.item_name,
-            name: char.name,
-            value: char.values[0].value,
-            unit: char.unit || "",
-            options,
-          };
-        });
+      const popular = char.values.find(v => v.is_popular);
 
-        tables.push({
-          id: `${item.item_name}-${Math.random().toString(36).slice(2)}`,
-          chapterName: chapter.chapter_name,
-          itemName: item.item_name,
-          okpd2: item.OKPD2,
-          data: rows,
-          dopChars: item.dop_chars || [],
-        });
-      });
+      return {
+        item_name: item.item_name,
+        name: char.name,
+        value: popular?.value || char.values[0].value,
+        unit: char.unit || "",
+        options,
+      };
     });
+
+    tables.push({
+      id: `${item.item_name}-${Math.random().toString(36).slice(2)}`,
+      chapterName: item.chapter_name,
+      itemName: item.item_name,
+      okpd2: item.OKPD2,
+      data: rows,
+      dopChars: item.dop_chars || [],
+    });
+  });
 
   return tables;
 }

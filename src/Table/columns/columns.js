@@ -28,6 +28,7 @@ const columns = [
     {
         id: "unit",
         label: "Ед. измерения",
+        width: 150,
         accessor: "unit",
         dataType: "text",
         options: []

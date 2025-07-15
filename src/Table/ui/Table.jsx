@@ -13,7 +13,7 @@ import Header from './Header';
 
 const defaultColumn = {
   minWidth: 40,
-  width: 200,
+  width: 300,
   maxWidth: 400,
   Cell: Cell,
   Header: Header,

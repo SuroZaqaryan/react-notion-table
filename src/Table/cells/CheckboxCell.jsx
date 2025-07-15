@@ -1,25 +1,25 @@
-export default function CheckboxCell({
-  rowIndex,
-  dataDispatch,
-  isSelected,
-}) {
+import { Checkbox } from 'antd';
+
+export default function CheckboxCell({ rowIndex, dataDispatch, isSelected }) {
   return (
-    <input
-      type="checkbox"
-      checked={isSelected}
-      onChange={() => {
-        dataDispatch({
-          type: 'toggle_row_selection',
-          rowIndex,
-        });
-      }}
+    <div
       style={{
-        margin: '0 auto',
         display: 'flex',
-        cursor: 'pointer',
+        justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
+        cursor: 'pointer',
       }}
-    />
+    >
+      <Checkbox
+        checked={isSelected}
+        onChange={() => {
+          dataDispatch({
+            type: 'toggle_row_selection',
+            rowIndex,
+          });
+        }}
+      />
+    </div>
   );
 }
