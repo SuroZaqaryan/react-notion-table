@@ -1,22 +1,25 @@
 export default function CheckboxCell({
-  initialValue,
   rowIndex,
-  columnId,
   dataDispatch,
+  isSelected,
 }) {
   return (
     <input
       type="checkbox"
-      checked={initialValue || false}
-      onChange={(e) => {
+      checked={isSelected}
+      onChange={() => {
         dataDispatch({
-          type: 'update_cell',
+          type: 'toggle_row_selection',
           rowIndex,
-          columnId,
-          value: e.target.checked,
         });
       }}
-      style={{ margin: '0 auto', display: 'flex', cursor: 'pointer', alignItems: 'center', height: '100%' }}
+      style={{
+        margin: '0 auto',
+        display: 'flex',
+        cursor: 'pointer',
+        alignItems: 'center',
+        height: '100%',
+      }}
     />
   );
 }

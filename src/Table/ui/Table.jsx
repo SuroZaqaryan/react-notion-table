@@ -20,16 +20,15 @@ const defaultColumn = {
   sortType: 'alphanumericFalsyLast',
 };
 
-const Row = ({ row, index, prepareRow, moveRow }) => {
+const Row = ({ row, index, prepareRow, moveRow, selectedRowIndices }) => {
   const dropRef = React.useRef(null);
-  const dragRef = React.useRef(null);
 
   const [{ isDragging }, drag, preview] = useDrag({
     type: 'row',
     item: { type: 'row', index },
     collect: (monitor) => ({
-      isDragging: monitor.isDragging()
-    })
+      isDragging: monitor.isDragging(),
+    }),
   });
 
   const [{ isOver }, drop] = useDrop({
@@ -52,15 +51,14 @@ const Row = ({ row, index, prepareRow, moveRow }) => {
       item.index = hoverIndex;
     },
     collect: (monitor) => ({
-      isOver: monitor.isOver()
-    })
+      isOver: monitor.isOver(),
+    }),
   });
 
   drop(preview(dropRef));
-
   prepareRow(row);
 
-  const isSelected = row.original?.selected;
+  const isSelected = selectedRowIndices?.includes(index);
 
   return (
     <div
@@ -70,38 +68,35 @@ const Row = ({ row, index, prepareRow, moveRow }) => {
         display: 'flex',
         alignItems: 'center',
         backgroundColor: isOver ? '#f0f0f0' : 'transparent',
-        transition: 'background-color 0.2s ease'
+        transition: 'background-color 0.2s ease',
       }}
       className={clsx('tr', {
         'tr-dragging': isDragging,
         'tr-over': isOver && !isDragging,
-        'tr-selected': isSelected, 
+        'tr-selected': isSelected,
       })}
       {...row.getRowProps({
         style: {
           ...row.getRowProps().style,
-          justifyContent: "flex-end",
+          justifyContent: 'flex-end',
         },
       })}
     >
       {row.cells.map((cell, cellIndex) => {
-        // нужно ли скрывать эти ячейки
         const isHiddenCell = ['checkbox', 'drag-handle', 'plus'].includes(cell.column.dataType);
 
         return (
           <div
             {...cell.getCellProps()}
-            className={clsx('td', { 'hidden-cell': isHiddenCell, })}
+            className={clsx('td', { 'hidden-cell': isHiddenCell })}
             key={`cell-${index}-${cellIndex}`}
             ref={cellIndex === 1 ? drag : null}
             style={{
               ...cell.getCellProps().style,
-              ...(isHiddenCell &&
-              {
+              ...(isHiddenCell && {
                 width: 30,
-                ...(cell.column.dataType === 'plus' && { marginRight: 8 })
-              }
-              )
+                ...(cell.column.dataType === 'plus' && { marginRight: 8 }),
+              }),
             }}
           >
             {cell.render('Cell')}
@@ -112,7 +107,7 @@ const Row = ({ row, index, prepareRow, moveRow }) => {
   );
 };
 
-function Table({ columns, data, dispatch: dataDispatch, skipReset }) {
+function Table({ columns, data, dispatch: dataDispatch, skipReset, selectedRowIndices }) {
   const sortTypes = useMemo(
     () => ({
       alphanumericFalsyLast(rowA, rowB, columnId, desc) {
@@ -136,6 +131,18 @@ function Table({ columns, data, dispatch: dataDispatch, skipReset }) {
     []
   );
 
+  const columnsWithSelection = useMemo(() =>
+    columns.map(col => ({
+      ...col,
+      Cell: props => (
+        <Cell
+          {...props}
+          selectedRowIndices={selectedRowIndices}
+        />
+      )
+    }))
+    , [columns, selectedRowIndices]);
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -145,7 +152,7 @@ function Table({ columns, data, dispatch: dataDispatch, skipReset }) {
     totalColumnsWidth,
   } = useTable(
     {
-      columns,
+      columns: columnsWithSelection, 
       data,
       defaultColumn,
       dataDispatch,
@@ -181,44 +188,43 @@ function Table({ columns, data, dispatch: dataDispatch, skipReset }) {
 
   return (
     <DndProvider backend={HTML5Backend}>
-        <div
-          {...getTableProps()}
-          className={clsx('table', isTableResizing() && 'noselect')}
-        >
-          <div>
-            {headerGroups.map((headerGroup, groupIndex) => (
-              <div
-                {...headerGroup.getHeaderGroupProps()}
-                className="tr"
-                key={`header-group-${groupIndex}`}
-              >
-                {headerGroup.headers.map((column, columnIndex) => (
-                  <div
-                    {...column.getHeaderProps()}
-                    className={clsx(
-                      column.className,
-                    )}
-                    key={`column-${groupIndex}-${columnIndex}`}
-                  >
-                    {column.render('Header')}
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-
-          <div {...getTableBodyProps()} className='rowgroup'>
-            {rows.map((row, index) => (
-              <Row
-                key={row.id}
-                row={row}
-                index={index}
-                prepareRow={prepareRow}
-                moveRow={moveRow}
-              />
-            ))}
-          </div>
+      <div
+        {...getTableProps()}
+        className={clsx('table', isTableResizing() && 'noselect')}
+      >
+        <div>
+          {headerGroups.map((headerGroup, groupIndex) => (
+            <div
+              {...headerGroup.getHeaderGroupProps()}
+              className="tr"
+              key={`header-group-${groupIndex}`}
+            >
+              {headerGroup.headers.map((column, columnIndex) => (
+                <div
+                  {...column.getHeaderProps()}
+                  className={clsx(column.className)}
+                  key={`column-${groupIndex}-${columnIndex}`}
+                >
+                  {column.render('Header')}
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
+
+        <div {...getTableBodyProps()} className="rowgroup">
+          {rows.map((row, index) => (
+            <Row
+              key={row.id}
+              row={row}
+              index={index}
+              prepareRow={prepareRow}
+              moveRow={moveRow}
+              selectedRowIndices={selectedRowIndices}
+            />
+          ))}
+        </div>
+      </div>
     </DndProvider>
   );
 }

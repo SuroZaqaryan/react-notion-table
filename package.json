@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "@popperjs/core": "^2.0.0",
+    "antd": "^5.26.5",
     "clsx": "1.1.1",
-    "faker": "^5.5.3",
     "immutability-helper": "^3.1.1",
     "lucide-react": "^0.525.0",
     "react": "17.0.2",
@@ -14,8 +14,7 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "17.0.2",
     "react-popper": "^2.2.5",
-    "react-table": "7.7.0",
-    "react-window": "^1.8.6"
+    "react-table": "7.7.0"
   },
   "scripts": {
     "dev": "vite",

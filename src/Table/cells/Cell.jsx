@@ -11,8 +11,10 @@ export default function Cell({
   row: { index, original },
   column: { id, dataType },
   dataDispatch,
+  selectedRowIndices,
 }) {
   const options = original.options || [];
+  const isSelected = selectedRowIndices?.includes(index); // определяем, выбран ли ряд
 
   function getCellElement() {
     const cellProps = {
@@ -31,7 +33,7 @@ export default function Cell({
       case DataTypes.SELECT:
         return <SelectCell {...cellProps} options={options} />;
       case DataTypes.CHECKBOX:
-        return <CheckboxCell {...cellProps} className="hidden-cell" />;
+        return <CheckboxCell {...cellProps} isSelected={isSelected} className="hidden-cell" />;
       case DataTypes.DRAG_HANDLE:
         return <DragHandleCell rowIndex={index} className="hidden-cell" />;
       case DataTypes.PLUS:

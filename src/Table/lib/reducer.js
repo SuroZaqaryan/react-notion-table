@@ -30,50 +30,79 @@ export function reducer(state, action) {
 
     case 'INSERT_ROW': {
       const newData = [...state.data];
-      const currentRow = newData[action.index - 1];
+      const indicesToInsert = state.selectedRowIndices.length > 0
+        ? [...state.selectedRowIndices].sort((a, b) => b - a) // reverse to not mess with indexes
+        : [action.triggeredFromRow];
 
-      const dopCharsItem = state.dopChars.find(
-        char => char.name === currentRow.name
-      );
+      for (const index of indicesToInsert) {
+        const currentRow = newData[index];
+        const dopCharsItem = state.dopChars.find(
+          char => char.name === currentRow.name
+        );
+        if (!dopCharsItem) continue;
 
-      if (!dopCharsItem) return state;
+        const sameCharRows = newData.filter(
+          row =>
+            row.name === currentRow.name &&
+            row.item_name === currentRow.item_name
+        );
 
-      const sameCharRows = newData.filter(
-        row =>
-          row.name === currentRow.name &&
-          row.item_name === currentRow.item_name
-      );
+        if (sameCharRows.length >= 2) continue;
 
-      // Ограничение: максимум 2 строки на характеристику
-      if (sameCharRows.length >= 2) return state;
+        const usedValues = sameCharRows.map(row => row.value);
 
-      const usedValues = sameCharRows.map(row => row.value);
+        const nextValue = dopCharsItem.values.find(
+          v => !usedValues.includes(v.value)
+        );
 
-      const nextValue = dopCharsItem.values.find(
-        v => !usedValues.includes(v.value)
-      );
+        if (!nextValue) continue;
 
-      if (!nextValue) return state;
+        const newRow = {
+          item_name: currentRow.item_name,
+          name: currentRow.name,
+          value: nextValue.value,
+          unit: currentRow.unit || '',
+          options: dopCharsItem.values.map(v => ({
+            label: v.value,
+            backgroundColor: randomColor(),
+          })),
+        };
 
-      const newRow = {
-        item_name: currentRow.item_name,
-        name: currentRow.name,
-        value: nextValue.value,
-        unit: currentRow.unit || '',
-        options: dopCharsItem.values.map(v => ({
-          label: v.value,
-          backgroundColor: randomColor(),
-        })),
-      };
-
-      newData.splice(action.index, 0, newRow);
+        newData.splice(index + 1, 0, newRow);
+      }
 
       return {
         ...state,
         data: newData,
         skipReset: true,
+        selectedRowIndices: [],
       };
     }
+
+    case 'toggle_row_selection': {
+      const selected = new Set(state.selectedRowIndices);
+      if (selected.has(action.rowIndex)) {
+        selected.delete(action.rowIndex);
+      } else {
+        selected.add(action.rowIndex);
+      }
+
+      return {
+        ...state,
+        selectedRowIndices: [...selected],
+      };
+    }
+
+    case 'delete_selected_rows': {
+      const newData = state.data.filter((_, index) => !state.selectedRowIndices.includes(index));
+      return {
+        ...state,
+        data: newData,
+        selectedRowIndices: [],
+        skipReset: true,
+      };
+    }
+
 
     case "add_option_to_column":
       const optionIndex = state.columns.findIndex(
