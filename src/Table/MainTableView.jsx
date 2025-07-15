@@ -1,19 +1,22 @@
 import "./styles/style.css";
 import exampleSpec from "./exampleSpec.json";
 import TableWrapper from "./ui/TableWrapper";
+import TopInfoEditor from "./ui/TopInfoEditor";
+import BottomInfoEditor from "./ui/BottomInfoEditor";
+import { useState } from "react";
 
 function transformSpecToTables(spec) {
   const tables = [];
 
-  spec.characteristics?.forEach(item => {
-    const rows = item.main_chars.map(char => {
-      const options = char.values.map(v => ({
+  spec.characteristics?.forEach((item) => {
+    const rows = item.main_chars.map((char) => {
+      const options = char.values.map((v) => ({
         label: v.value,
         value: v.value,
-        backgroundColor: '#E4E4E7',
+        backgroundColor: "#E4E4E7",
       }));
 
-      const popular = char.values.find(v => v.is_popular);
+      const popular = char.values.find((v) => v.is_popular);
 
       return {
         item_name: item.item_name,
@@ -38,10 +41,35 @@ function transformSpecToTables(spec) {
 }
 
 function MainTableView() {
-  const tables = transformSpecToTables(exampleSpec);
+  const [specState, setSpecState] = useState(exampleSpec);
+
+  const handleTopChange = (key, value) => {
+    setSpecState((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleBottomChange = (index, key, value) => {
+    const keys = ["warranty", "payment"];
+    setSpecState((prev) => ({
+      ...prev,
+      [keys[index]]: {
+        ...prev[keys[index]],
+        [key]: value,
+      },
+    }));
+  };
+
+  const tables = transformSpecToTables(specState);
 
   return (
     <div className="table-group">
+      {/* Дата и Адрес */}
+      <TopInfoEditor
+        date={specState.date}
+        address={specState.address}
+        onChange={handleTopChange}
+      />
+
+      {/* Таблицы */}
       {tables.map(({ id, chapterName, itemName, okpd2, data, dopChars }) => (
         <TableWrapper
           key={id}
@@ -52,6 +80,17 @@ function MainTableView() {
           dopChars={dopChars}
         />
       ))}
+
+      {
+        <>
+          {/* Оплата и Гарантия */}
+          <BottomInfoEditor
+            sections={[specState.warranty, specState.payment]}
+            onChange={handleBottomChange}
+          />
+        </>
+      }
+
     </div>
   );
 }

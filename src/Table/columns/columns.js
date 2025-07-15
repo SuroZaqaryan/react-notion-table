@@ -10,17 +10,17 @@ const columns = [
     },
     { id: "drag-handle", label: "", accessor: "drag-handle", dataType: "drag-handle", className: "hidden-col", width: 40, disableResizing: true },
     { id: "plus", label: "", accessor: "plus", dataType: "plus", className: "hidden-col", width: 40, disableResizing: true },
-    
     {
         id: "name",
-        label: "Название",
+        label: "Название товара",
         accessor: "name",
         dataType: "text",
         options: []
     },
     {
         id: "value",
-        label: "Значение",
+        label: "Бренд, модель, цвет, размер, материал",
+        width: 340,
         accessor: "value",
         dataType: "select",
         options: []
@@ -28,7 +28,7 @@ const columns = [
     {
         id: "unit",
         label: "Ед. измерения",
-        width: 150,
+        width: 160,
         accessor: "unit",
         dataType: "text",
         options: []
