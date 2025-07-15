@@ -27,10 +27,16 @@ export default function Cell({
 
     switch (dataType) {
       case DataTypes.TEXT:
+        if (id === 'name' && original.isNewRow && original.nameOptions) {
+          return <SelectCell {...cellProps} options={original.nameOptions} />;
+        }
         return <TextCell {...cellProps} />;
       case DataTypes.NUMBER:
         return <NumberCell {...cellProps} />;
       case DataTypes.SELECT:
+        if (id === 'value' && original.options) {
+          return <SelectCell {...cellProps} options={original.options} />;
+        }
         return <SelectCell {...cellProps} options={options} />;
       case DataTypes.CHECKBOX:
         return <CheckboxCell {...cellProps} isSelected={isSelected} className="hidden-cell" />;

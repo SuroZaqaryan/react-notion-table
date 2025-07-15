@@ -1,5 +1,4 @@
 import { randomColor, shortId } from "../utils/utils";
-import exampleSpec from '../exampleSpec.json';
 
 export function reducer(state, action) {
   switch (action.type) {
@@ -14,7 +13,7 @@ export function reducer(state, action) {
       const row = newData[action.rowIndex];
       const existing = row.options || [];
 
-      // Удаляем дубликаты по label
+      // Удаление дубликаты по label
       const newOptions = [...existing, action.option].filter(
         (opt, i, self) => i === self.findIndex(o => o.label === opt.label)
       );
@@ -31,41 +30,37 @@ export function reducer(state, action) {
     case 'INSERT_ROW': {
       const newData = [...state.data];
       const indicesToInsert = state.selectedRowIndices.length > 0
-        ? [...state.selectedRowIndices].sort((a, b) => b - a) // reverse to not mess with indexes
+        ? [...state.selectedRowIndices].sort((a, b) => b - a)
         : [action.triggeredFromRow];
 
       for (const index of indicesToInsert) {
         const currentRow = newData[index];
-        const dopCharsItem = state.dopChars.find(
-          char => char.name === currentRow.name
+
+        const relevantDopChars = state.dopChars.filter(char => char.name);
+
+        if (!relevantDopChars.length) continue;
+
+        const allNameOptions = relevantDopChars.map(char => ({
+          label: char.name,
+          value: char.name,
+        }));
+
+        const allValueOptions = relevantDopChars.flatMap(char =>
+          char.values.map(v => ({
+            label: v.value,
+            value: v.value,
+            backgroundColor: randomColor(),
+          }))
         );
-        if (!dopCharsItem) continue;
-
-        const sameCharRows = newData.filter(
-          row =>
-            row.name === currentRow.name &&
-            row.item_name === currentRow.item_name
-        );
-
-        if (sameCharRows.length >= 2) continue;
-
-        const usedValues = sameCharRows.map(row => row.value);
-
-        const nextValue = dopCharsItem.values.find(
-          v => !usedValues.includes(v.value)
-        );
-
-        if (!nextValue) continue;
 
         const newRow = {
           item_name: currentRow.item_name,
-          name: currentRow.name,
-          value: nextValue.value,
-          unit: currentRow.unit || '',
-          options: dopCharsItem.values.map(v => ({
-            label: v.value,
-            backgroundColor: randomColor(),
-          })),
+          name: '', // будет SelectCell, пользователь выберет
+          value: '', // будет SelectCell
+          unit: '',
+          options: allValueOptions,
+          nameOptions: allNameOptions, 
+          isNewRow: true, 
         };
 
         newData.splice(index + 1, 0, newRow);
@@ -78,6 +73,7 @@ export function reducer(state, action) {
         selectedRowIndices: [],
       };
     }
+
 
     case 'toggle_row_selection': {
       const selected = new Set(state.selectedRowIndices);
@@ -102,7 +98,6 @@ export function reducer(state, action) {
         skipReset: true,
       };
     }
-
 
     case "add_option_to_column":
       const optionIndex = state.columns.findIndex(
