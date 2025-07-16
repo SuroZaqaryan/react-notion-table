@@ -1,25 +1,13 @@
-import { useReducer, useEffect } from "react";
+import { useEffect } from "react";
 import Table from "./Table";
-import { reducer } from "../lib/reducer";
-import columns from "../columns/columns";
 import { Trash2 } from 'lucide-react';
 import { Button, Tooltip, Typography } from 'antd';
 import EditableParagraph from "./EditableParagraph";
 
-function TableWrapper({ chapterName, itemName, okpd2, data, dopChars }) {
-  const [state, dispatch] = useReducer(reducer, {
-    columns,
-    data,
-    skipReset: false,
-    metadata: {
-      chapterName,
-      itemName,
-      okpd2,
-    },
-    dopChars,
-    selectedRowIndices: [],
-  });
-
+function TableWrapper({
+  state,
+  dispatch
+}) {
   useEffect(() => {
     dispatch({ type: "enable_reset" });
   }, [state.data, state.columns]);
@@ -36,8 +24,52 @@ function TableWrapper({ chapterName, itemName, okpd2, data, dopChars }) {
     dispatch({ type: 'delete_selected_rows' });
   };
 
+  const transform = () => {
+    function transformStateToSpec(state) {
+      const { metadata, data } = state;
+
+      const mainCharMap = new Map();
+      const dopCharMap = new Map();
+
+      for (const row of data) {
+        const key = row.name || '';
+
+        const targetMap = row.isNewRow ? dopCharMap : mainCharMap;
+
+        if (!targetMap.has(key)) {
+          targetMap.set(key, {
+            name: key,
+            unit: row.unit || '',
+            values: [],
+          });
+        }
+
+        targetMap.get(key).values.push({
+          value: row.value || '',
+          is_popular: !row.isNewRow,
+        });
+      }
+
+      return {
+        characteristics: [
+          {
+            chapter_name: metadata.chapterName,
+            item_name: metadata.itemName,
+            OKPD2: metadata.okpd2,
+            main_chars: Array.from(mainCharMap.values()),
+            dop_chars: Array.from(dopCharMap.values()),
+          },
+        ],
+      };
+    }
+
+    const payload = transformStateToSpec(state);
+    console.log('payload', payload);
+  }
+
   return (
     <div className="table-wrapper">
+      <button onClick={transform}>123</button>
       <div className="editable-wrapper">
         <div className="editable-fields">
           <EditableParagraph

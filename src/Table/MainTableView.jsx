@@ -4,6 +4,8 @@ import TableWrapper from "./ui/TableWrapper";
 import TopInfoEditor from "./ui/TopInfoEditor";
 import BottomInfoEditor from "./ui/BottomInfoEditor";
 import { useState } from "react";
+import { reducer } from "./lib/reducer";
+import columns from "./columns/columns";
 
 function transformSpecToTables(spec) {
   const tables = [];
@@ -42,6 +44,24 @@ function transformSpecToTables(spec) {
 
 function MainTableView() {
   const [specState, setSpecState] = useState(exampleSpec);
+  const [tablesState, setTablesState] = useState(() => {
+    const tables = transformSpecToTables(exampleSpec);
+    return tables.map(table => ({
+      id: table.id,
+      state: {
+        columns,
+        data: table.data,
+        skipReset: false,
+        metadata: {
+          chapterName: table.chapterName,
+          itemName: table.itemName,
+          okpd2: table.okpd2,
+        },
+        dopChars: table.dopChars,
+        selectedRowIndices: [],
+      }
+    }));
+  });
 
   const handleTopChange = (key, value) => {
     setSpecState((prev) => ({ ...prev, [key]: value }));
@@ -58,6 +78,16 @@ function MainTableView() {
     }));
   };
 
+  const handleTableDispatch = (tableId, action) => {
+    setTablesState(prev => prev.map(table => {
+      if (table.id === tableId) {
+        const newState = reducer(table.state, action);
+        return { ...table, state: newState };
+      }
+      return table;
+    }));
+  };
+
   const tables = transformSpecToTables(specState);
 
   return (
@@ -70,27 +100,28 @@ function MainTableView() {
       />
 
       {/* Таблицы */}
-      {tables.map(({ id, chapterName, itemName, okpd2, data, dopChars }) => (
-        <TableWrapper
-          key={id}
-          chapterName={chapterName}
-          itemName={itemName}
-          okpd2={okpd2}
-          data={data}
-          dopChars={dopChars}
-        />
-      ))}
-
-      {
-        <>
-          {/* Оплата и Гарантия */}
-          <BottomInfoEditor
-            sections={[specState.warranty, specState.payment]}
-            onChange={handleBottomChange}
+      {tablesState.map(({ id, state }) => {
+        const tableData = tables.find(t => t.id === id);
+        return (
+          <TableWrapper
+            key={id}
+            id={id}
+            chapterName={state.metadata.chapterName}
+            itemName={state.metadata.itemName}
+            okpd2={state.metadata.okpd2}
+            data={state.data}
+            dopChars={state.dopChars}
+            state={state}
+            dispatch={(action) => handleTableDispatch(id, action)}
           />
-        </>
-      }
+        );
+      })}
 
+      {/* Оплата и Гарантия */}
+      <BottomInfoEditor
+        sections={[specState.warranty, specState.payment]}
+        onChange={handleBottomChange}
+      />
     </div>
   );
 }

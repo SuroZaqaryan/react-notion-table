@@ -79,6 +79,7 @@ export default function SelectCell({
         setValue({ value: newLabel, update: true });
       }
       setShowAdd(false);
+      setShowSelect(false);
     }
   }
 
@@ -171,8 +172,8 @@ export default function SelectCell({
               >
                 <Badge
                   value={
-                    <span className="svg-icon-sm svg-text" style={{padding: 3, color: '#fff', fontSize: 14}}>
-                     Добавить <Plus style={{stroke: '#fff'}}/>
+                    <span className="svg-icon-sm svg-text" style={{ padding: 3, color: '#fff', fontSize: 14 }}>
+                      Добавить <Plus style={{ stroke: '#fff' }} />
                     </span>
                   }
                   backgroundColor={'#44403C'}
