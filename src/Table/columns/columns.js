@@ -12,7 +12,7 @@ const columns = [
     { id: "plus", label: "", accessor: "plus", dataType: "plus", className: "hidden-col", width: 40, disableResizing: true },
     {
         id: "name",
-        label: "Название товара",
+        label: "Наименование характеристики",
         accessor: "name",
         dataType: "text",
         className: "name-col",
@@ -20,7 +20,7 @@ const columns = [
     },
     {
         id: "value",
-        label: "Бренд, модель, цвет, размер, материал",
+        label: "Значение",
         width: 340,
         accessor: "value",
         dataType: "select",
@@ -28,7 +28,7 @@ const columns = [
     },
     {
         id: "unit",
-        label: "Ед. измерения",
+        label: "Ед. изм.",
         width: 160,
         accessor: "unit",
         dataType: "text",

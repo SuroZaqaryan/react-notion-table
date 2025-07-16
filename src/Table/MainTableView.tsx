@@ -6,10 +6,71 @@ import BottomInfoEditor from "./ui/BottomInfoEditor";
 import { reducer, initialState } from "./lib/reducer";
 import columns from "./columns/columns";
 
-function MainTableView() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const lastPayloadRef = useRef(null);
+export interface ValueOption {
+    value: string;
+    is_popular: boolean;
+}
 
+export interface MainChar {
+    name: string;
+    unit?: string;
+    values: ValueOption[];
+}
+
+export interface CharacteristicItem {
+    chapter_name: string;
+    item_name: string;
+    OKPD2: string;
+    main_chars: MainChar[];
+    dop_chars?: MainChar[]; // Added as it's used in the code
+}
+
+export interface Warranty {
+    chapter_name: string;
+    description: string;
+}
+
+export interface Payment {
+    chapter_name: string;
+    description: string;
+}
+
+export interface RootData {
+    date: string | Date; 
+    address: string;
+    characteristics: CharacteristicItem[];
+    warranty: Warranty;
+    payment: Payment;
+}
+
+interface TableState {
+    columns: any; // Replace with proper column type if available
+    data: any[]; // Replace with proper row type if available
+    skipReset: boolean;
+    metadata: {
+        chapterName: string;
+        itemName: string;
+        okpd2: string;
+    };
+    dopChars?: any; // Replace with proper type if available
+    selectedRowIndices: number[];
+}
+
+interface TableData {
+    id: string;
+    state: TableState;
+}
+
+interface AppState {
+    date: string | Date;
+    address: string;
+    tables: TableData[];
+    bottomSections: [Warranty?, Payment?];
+}
+
+function MainTableView() {
+  const [state, dispatch] = useReducer(reducer, initialState as AppState);
+  const lastPayloadRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!state) return;
@@ -17,30 +78,30 @@ function MainTableView() {
     const characteristics = state.tables.map(({ state: table }) => {
       const { metadata, data } = table;
 
-      const mainCharMap = new Map();
-      const dopCharMap = new Map();
+      const mainCharMap = new Map<string, MainChar>();
+      const dopCharMap = new Map<string, MainChar>();
 
       for (const [idx, row] of data.entries()) {
-        let key;
-        if (row.isNewRow) {
+        let key: string;
+        if ((row as any).isNewRow) { // Replace 'any' with proper row type
           key = `newRow_${idx}`;
         } else {
-          key = row.name || "";
+          key = (row as any).name || ""; // Replace 'any' with proper row type
         }
 
         const targetMap = mainCharMap;
 
         if (!targetMap.has(key)) {
           targetMap.set(key, {
-            name: row.isNewRow ? row.name || "" : key,
-            unit: row.unit || "",
+            name: (row as any).isNewRow ? (row as any).name || "" : key, // Replace 'any' with proper row type
+            unit: (row as any).unit || "", // Replace 'any' with proper row type
             values: [],
           });
         }
 
-        targetMap.get(key).values.push({
-          value: row.value || "",
-          is_popular: !row.isNewRow,
+        targetMap.get(key)?.values.push({
+          value: (row as any).value || "", // Replace 'any' with proper row type
+          is_popular: !(row as any).isNewRow, // Replace 'any' with proper row type
         });
       }
 
@@ -53,26 +114,26 @@ function MainTableView() {
       };
     });
 
-    const payload = {
+    const payload: RootData = {
       date: state.date,
       address: state.address,
-      warranty: state.bottomSections?.[0],
-      payment: state.bottomSections?.[1],
+      warranty: state.bottomSections[0] as Warranty,
+      payment: state.bottomSections[1] as Payment,
       characteristics,
     };
 
-    if (JSON.stringify(payload) !== lastPayloadRef.current) {
+    const payloadString = JSON.stringify(payload);
+    if (payloadString !== lastPayloadRef.current) {
       console.log("FULL PAYLOAD", payload);
-      lastPayloadRef.current = JSON.stringify(payload);
+      lastPayloadRef.current = payloadString;
     }
   }, [state]);
-
 
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await fetch("/exampleSpec.json");
-        const data = await response.json();
+        const data: RootData = await response.json();
 
         const tables = transformSpecToTables(data);
 
@@ -113,15 +174,15 @@ function MainTableView() {
     return <div>Загрузка данных...</div>;
   }
 
-  const handleTopChange = (key, value) => {
+  const handleTopChange = (key: keyof Pick<AppState, 'date' | 'address'>, value: string | Date) => {
     dispatch({ type: "update_common_field", key, value });
   };
 
-  const handleBottomChange = (index, key, value) => {
+  const handleBottomChange = (index: number, key: keyof (Warranty & Payment), value: string) => {
     dispatch({ type: "update_bottom_section", index, key, value });
   };
 
-  const handleTableDispatch = (tableId, action) => {
+  const handleTableDispatch = (tableId: string, action: any) => { // Replace 'any' with proper action type
     dispatch({ type: "update_table", tableId, action });
   };
 
@@ -136,12 +197,6 @@ function MainTableView() {
       {state.tables.map(({ id, state: tableState }) => (
         <TableWrapper
           key={id}
-          id={id}
-          chapterName={tableState.metadata.chapterName}
-          itemName={tableState.metadata.itemName}
-          okpd2={tableState.metadata.okpd2}
-          data={tableState.data}
-          dopChars={tableState.dopChars}
           state={tableState}
           dispatch={(action) => handleTableDispatch(id, action)}
         />

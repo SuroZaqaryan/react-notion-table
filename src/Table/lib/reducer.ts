@@ -1,7 +1,60 @@
 import { shortId } from "../utils/utils";
-export const initialState = null;
+import { AppState, ReducerAction, TableAction, TableState, TableRow, Warranty, Payment } from "../types/types";
 
-export function reducer(state, action) {
+export const initialState: AppState | null = null;
+
+export function reducer(state: AppState | null, action: ReducerAction): AppState {
+  if (state === null) {
+    if (action.type === "init") {
+      return {
+        ...action.payload.commonFields,
+        bottomSections: action.payload.bottomSections,
+        tables: action.payload.tables,
+      };
+    }
+    throw new Error("Cannot reduce null state without init action");
+  }
+
+  switch (action.type) {
+    case "update_common_field":
+      return {
+        ...state,
+        [action.key]: action.value,
+        skipReset: true,
+      };
+
+    case "update_bottom_section":
+      const updatedSections = [...state.bottomSections] as [Warranty?, Payment?];
+
+      if (updatedSections[action.index]) {
+        updatedSections[action.index] = {
+          ...updatedSections[action.index],
+          [action.key]: action.value,
+        } as Warranty | Payment;
+      }
+
+      return {
+        ...state,
+        bottomSections: updatedSections as [Warranty?, Payment?],
+        skipReset: true,
+      };
+
+    case "update_table":
+      return {
+        ...state,
+        tables: state.tables.map((table) =>
+          table.id === action.tableId
+            ? { ...table, state: tableReducer(table.state, action.action) }
+            : table
+        ),
+      };
+
+    default:
+      return state;
+  }
+}
+
+function tableReducer(state: TableState, action: TableAction): TableState {
   switch (action.type) {
     case "update_data":
       return {
@@ -9,12 +62,12 @@ export function reducer(state, action) {
         data: action.data,
         skipReset: true
       };
+
     case 'ADD_OPTION_TO_ROW': {
       const newData = [...state.data];
       const row = newData[action.rowIndex];
       const existing = row.options || [];
 
-      // Удаление дубликаты по label
       const newOptions = [...existing, action.option].filter(
         (opt, i, self) => i === self.findIndex(o => o.label === opt.label)
       );
@@ -28,42 +81,6 @@ export function reducer(state, action) {
       };
     }
 
-    case "init":
-      return {
-        ...action.payload.commonFields,
-        bottomSections: action.payload.bottomSections,
-        tables: action.payload.tables,
-      };
-
-    case "update_common_field":
-      return {
-        ...state,
-        [action.key]: action.value,
-        skipReset: true,
-      };
-
-    case "update_bottom_section":
-      const updatedSections = [...state.bottomSections];
-      updatedSections[action.index] = {
-        ...updatedSections[action.index],
-        [action.key]: action.value,
-      };
-      return {
-        ...state,
-        bottomSections: updatedSections,
-        skipReset: true,
-      };
-
-    case "update_table":
-      return {
-        ...state,
-        tables: state.tables.map((table) =>
-          table.id === action.tableId
-            ? { ...table, state: reducer(table.state, action.action) }
-            : table
-        ),
-      };
-
     case 'INSERT_ROW': {
       const newData = [...state.data];
       const indicesToInsert = state.selectedRowIndices.length > 0
@@ -72,8 +89,7 @@ export function reducer(state, action) {
 
       for (const index of indicesToInsert) {
         const currentRow = newData[index];
-
-        const relevantDopChars = state.dopChars.filter(char => char.name);
+        const relevantDopChars = state.dopChars?.filter(char => char.name) || [];
 
         if (!relevantDopChars.length) continue;
 
@@ -91,12 +107,12 @@ export function reducer(state, action) {
           }))
         );
 
-        const newRow = {
+        const newRow: TableRow = {
           item_name: currentRow.item_name,
-          name: '', // будет SelectCell, пользователь выберет
-          value: '', // будет SelectCell
+          name: '',
+          value: '',
           unit: '',
-          options: allValueOptions,
+          options: [],
           nameOptions: allNameOptions,
           isNewRow: true,
         };
@@ -111,7 +127,6 @@ export function reducer(state, action) {
         selectedRowIndices: [],
       };
     }
-
 
     case 'toggle_row_selection': {
       const selected = new Set(state.selectedRowIndices);
@@ -149,13 +164,14 @@ export function reducer(state, action) {
           {
             ...state.columns[optionIndex],
             options: [
-              ...state.columns[optionIndex].options,
+              ...(state.columns[optionIndex].options ?? []),
               { label: action.option, backgroundColor: action.backgroundColor },
             ],
           },
           ...state.columns.slice(optionIndex + 1, state.columns.length),
         ],
       };
+
     case "update_column_type":
       const typeIndex = state.columns.findIndex(
         (column) => column.id === action.columnId
@@ -174,9 +190,9 @@ export function reducer(state, action) {
               ],
               data: state.data.map((row) => ({
                 ...row,
-                [action.columnId]: isNaN(row[action.columnId])
+                [action.columnId]: isNaN(Number(row[action.columnId]))
                   ? ""
-                  : Number.parseInt(row[action.columnId], 10),
+                  : Number.parseInt(row[action.columnId] as string, 10),
               })),
             };
           }
@@ -192,11 +208,11 @@ export function reducer(state, action) {
               skipReset: true,
             };
           } else {
-            let options = [];
+            let options: Array<{ label: string; backgroundColor: string }> = [];
             state.data.forEach((row) => {
               if (row[action.columnId]) {
                 options.push({
-                  label: row[action.columnId],
+                  label: row[action.columnId] as string,
                   backgroundColor: '#E4E4E7',
                 });
               }
@@ -208,7 +224,11 @@ export function reducer(state, action) {
                 {
                   ...state.columns[typeIndex],
                   dataType: action.dataType,
-                  options: [...state.columns[typeIndex].options, ...options],
+                  options: [
+                    ...(state.columns[typeIndex].options ?? []),
+                    ...options,
+                  ],
+
                 },
                 ...state.columns.slice(typeIndex + 1, state.columns.length),
               ],
@@ -246,6 +266,7 @@ export function reducer(state, action) {
         default:
           return state;
       }
+
     case "update_metadata":
       return {
         ...state,
@@ -269,6 +290,7 @@ export function reducer(state, action) {
           ...state.columns.slice(index + 1, state.columns.length),
         ],
       };
+
     case "update_cell":
       return {
         ...state,
@@ -279,7 +301,7 @@ export function reducer(state, action) {
             return {
               ...row,
               [action.columnId]: action.value,
-              ...(isSelectionColumn && { selected: action.value }), // добавляем selected = true/false
+              ...(isSelectionColumn && { selected: action.value }),
             };
           }
           return row;
@@ -307,6 +329,7 @@ export function reducer(state, action) {
           ...state.columns.slice(leftIndex, state.columns.length),
         ],
       };
+
     case "add_column_to_right":
       const rightIndex = state.columns.findIndex(
         (column) => column.id === action.columnId
@@ -328,6 +351,7 @@ export function reducer(state, action) {
           ...state.columns.slice(rightIndex + 1, state.columns.length),
         ],
       };
+
     case "delete_column":
       const deleteIndex = state.columns.findIndex(
         (column) => column.id === action.columnId
@@ -345,6 +369,7 @@ export function reducer(state, action) {
         ...state,
         skipReset: false,
       };
+
     default:
       return state;
   }
