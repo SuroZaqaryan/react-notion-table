@@ -145,5 +145,10 @@ export type TableAction =
     | { type: "add_column_to_right"; columnId: string; focus: boolean }
     | { type: "delete_column"; columnId: string }
     | { type: "enable_reset" }
-    | { type: "init" } // Add other action types as needed
+    | { type: "init" }
+    | {
+        type: 'update_row_by_name';
+        rowIndex: number;
+        name: string;
+    }
     ;

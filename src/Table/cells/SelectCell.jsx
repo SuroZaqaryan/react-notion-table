@@ -103,7 +103,16 @@ export default function SelectCell({
 
 
   function handleOptionClick(option) {
-    setValue({ value: option.label, update: true });
+    if (columnId === 'name') {
+      // Обновить name и запросить options для value
+      dataDispatch({
+        type: 'update_row_by_name',
+        rowIndex,
+        name: option.label,
+      });
+    } else {
+      setValue({ value: option.label, update: true });
+    }
     setShowSelect(false);
   }
 

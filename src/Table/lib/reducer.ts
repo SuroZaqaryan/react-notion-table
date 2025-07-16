@@ -112,7 +112,7 @@ function tableReducer(state: TableState, action: TableAction): TableState {
           name: '',
           value: '',
           unit: '',
-          options: [],
+          options: allValueOptions,
           nameOptions: allNameOptions,
           isNewRow: true,
         };
@@ -290,6 +290,33 @@ function tableReducer(state: TableState, action: TableAction): TableState {
           ...state.columns.slice(index + 1, state.columns.length),
         ],
       };
+
+    case 'update_row_by_name': {
+      const { rowIndex, name } = action;
+
+      const targetChar = state.dopChars?.find(char => char.name === name);
+      const options = targetChar?.values.map(v => ({
+        label: v.value,
+        value: v.value,
+        backgroundColor: '#E4E4E7',
+      })) ?? [];
+
+      return {
+        ...state,
+        skipReset: true,
+        data: state.data.map((row, i) =>
+          i === rowIndex
+            ? {
+              ...row,
+              name,
+              options,
+              value: '', // Сброс предыдущего значения
+            }
+            : row
+        ),
+      };
+    }
+
 
     case "update_cell":
       return {
