@@ -157,6 +157,7 @@ function MainTableView() {
                   okpd2: table.okpd2,
                 },
                 dopChars: table.dopChars,
+                mainChars: table.mainChars,
                 selectedRowIndices: [],
               },
             })),

@@ -93,11 +93,25 @@ function tableReducer(state: TableState, action: TableAction): TableState {
 
         if (!relevantDopChars.length) continue;
 
-        const allNameOptions = relevantDopChars.map(char => ({
+        const currentMainChar = state.mainChars?.find(mc => mc.name === currentRow.name);
+
+        const dopNameOptions = relevantDopChars.map(char => ({
           label: char.name,
           value: char.name,
           backgroundColor: '#E4E4E7',
         }));
+
+        const initialNameOption = currentMainChar
+          ? {
+            label: currentMainChar.name,
+            value: currentMainChar.name,
+            backgroundColor: '#E4E4E7',
+          }
+          : null;
+
+        const allNameOptions = initialNameOption
+          ? [...dopNameOptions.filter(opt => opt.value !== initialNameOption.value), initialNameOption]
+          : dopNameOptions;
 
         const allValueOptions = relevantDopChars.flatMap(char =>
           char.values.map(v => ({
@@ -109,7 +123,7 @@ function tableReducer(state: TableState, action: TableAction): TableState {
 
         const newRow: TableRow = {
           item_name: currentRow.item_name,
-          name: '',
+          name: '', 
           value: '',
           unit: '',
           options: allValueOptions,
@@ -294,7 +308,9 @@ function tableReducer(state: TableState, action: TableAction): TableState {
     case 'update_row_by_name': {
       const { rowIndex, name } = action;
 
-      const targetChar = state.dopChars?.find(char => char.name === name);
+      const targetChar =
+        state.dopChars?.find(char => char.name === name) ||
+        state.mainChars?.find(char => char.name === name);
 
       const options = targetChar?.values.map(v => ({
         label: v.value,
@@ -319,7 +335,6 @@ function tableReducer(state: TableState, action: TableAction): TableState {
         ),
       };
     }
-
 
     case "update_cell":
       return {

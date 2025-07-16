@@ -2,6 +2,8 @@ import "../styles/style.css";
 import { Typography } from 'antd';
 import EditableParagraph from "../ui/EditableParagraph";
 
+const { Title } = Typography;
+
 function TopInfoEditor({ date, address, onChange }) {
   return (
     <div className="info-block">
@@ -9,7 +11,8 @@ function TopInfoEditor({ date, address, onChange }) {
         value={address}
         onChange={(val) => onChange("address", val)}
         as={Typography.Title}
-        asProps={{ level: 3 }}
+        asProps={{ level: 4 }}
+        label={<Title level={5} style={{ margin: 0, fontWeight: 400, color: '#7c7c7c' }}>Место поставки товара:</Title>}
       />
 
       <EditableParagraph
@@ -17,6 +20,12 @@ function TopInfoEditor({ date, address, onChange }) {
         onChange={(val) => onChange("date", val)}
         as={Typography.Title}
         asProps={{ level: 4 }}
+        inputWidth={200}
+        label={
+          <Title level={5} style={{ margin: 0, fontWeight: 400, color: '#7c7c7c' }}>
+            Срок поставки товара не должен превышать календарных дней:
+          </Title>
+        }
       />
     </div>
   );

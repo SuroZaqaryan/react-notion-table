@@ -11,7 +11,7 @@ const suggestions = [
     'Исправить шаблонные фразы',
 ];
 
-function EditableParagraph({ value, onChange, label, as: Component = 'span', asProps = {} }) {
+function EditableParagraph({ value, onChange, label, as: Component = 'span', asProps = {}, inputWidth = '100%' }) {
     const { token } = theme.useToken();
 
     const [editing, setEditing] = useState(false);
@@ -48,7 +48,6 @@ function EditableParagraph({ value, onChange, label, as: Component = 'span', asP
         if (!selectedSuggestion) return;
 
         setLoading(true);
-        // Эмуляция API-запроса
         setTimeout(() => {
             const fakeServerResponse = selectedSuggestion;
             onChange(fakeServerResponse);
@@ -77,13 +76,11 @@ function EditableParagraph({ value, onChange, label, as: Component = 'span', asP
                         />
                     </Tooltip>
 
-
                     <Tooltip title="Редактировать вручную">
                         <Button
                             type="text"
                             onClick={() => setEditing(true)}
                             style={{ background: editing ? '#E4E4E7' : '#fff' }}
-
                             icon={
                                 <Pencil
                                     style={{ display: 'flex', cursor: 'pointer' }}
@@ -95,25 +92,30 @@ function EditableParagraph({ value, onChange, label, as: Component = 'span', asP
                     </Tooltip>
                 </Flex>
 
-                {label && (
-                    <Text style={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
-                        {label}
-                    </Text>
-                )}
+                <Flex gap={4} wrap align='flex-end'>
+                    {
+                        label &&
+                        <div style={{ display: 'flex', alignItems: 'center', marginRight: 10, whiteSpace: 'normal' }}>
+                            {label}
+                        </div>
+                    }
 
-                {editing ? (
-                    <Input
-                        ref={inputRef}
-                        value={tempValue}
-                        onChange={(e) => setTempValue(e.target.value)}
-                        style={{ minWidth: '100%' }}
-                        onPressEnter={finishEditing}
-                        onBlur={finishEditing}
-                        size="middle"
-                    />
-                ) : (
-                    <Component style={{ margin: 0, background: showPopup ? '#E4E4E7' : '#fff' }} {...asProps}>{value}</Component>
-                )}
+                    {editing ? (
+                        <Input
+                            ref={inputRef}
+                            value={tempValue}
+                            onChange={(e) => setTempValue(e.target.value)}
+                            style={{ minWidth: inputWidth }}
+                            onPressEnter={finishEditing}
+                            onBlur={finishEditing}
+                            size="middle"
+                        />
+                    ) : (
+                        <Component style={{ margin: 0, background: showPopup ? '#E4E4E7' : '#fff' }} {...asProps}>
+                            {value}
+                        </Component>
+                    )}
+                </Flex>
             </Flex>
 
             {showPopup && (
@@ -131,7 +133,17 @@ function EditableParagraph({ value, onChange, label, as: Component = 'span', asP
                     }}
                 >
                     <Flex vertical gap={8}>
-                        <Flex align='center' style={{ boxShadow: token.boxShadowSecondary, background: '#fff', border: '1px solid #E4E4E7', padding: '8px 16px', borderRadius: 12 }} gap={6}>
+                        <Flex
+                            align="center"
+                            style={{
+                                boxShadow: token.boxShadowSecondary,
+                                background: '#fff',
+                                border: '1px solid #E4E4E7',
+                                padding: '8px 16px',
+                                borderRadius: 12,
+                            }}
+                            gap={6}
+                        >
                             <Plus style={{ cursor: 'pointer' }} />
                             <Input
                                 rows={4}
@@ -147,7 +159,7 @@ function EditableParagraph({ value, onChange, label, as: Component = 'span', asP
                                 icon={
                                     <CircleArrowUp
                                         color="#ffffff"
-                                        fill='#1c1c1c'
+                                        fill="#1c1c1c"
                                         onClick={applySuggestion}
                                         size={30}
                                         strokeWidth={1}
@@ -157,7 +169,15 @@ function EditableParagraph({ value, onChange, label, as: Component = 'span', asP
                             />
                         </Flex>
 
-                        <Flex vertical style={{ boxShadow: token.boxShadowSecondary, background: '#fff', border: '1px solid #E4E4E7', borderRadius: 8 }}>
+                        <Flex
+                            vertical
+                            style={{
+                                boxShadow: token.boxShadowSecondary,
+                                background: '#fff',
+                                border: '1px solid #E4E4E7',
+                                borderRadius: 8,
+                            }}
+                        >
                             {suggestions.map((suggestion) => (
                                 <Button
                                     key={suggestion}
@@ -176,5 +196,6 @@ function EditableParagraph({ value, onChange, label, as: Component = 'span', asP
         </div>
     );
 }
+
 
 export default EditableParagraph;

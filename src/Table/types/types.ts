@@ -66,6 +66,7 @@ export interface TableState {
     skipReset: boolean;
     metadata: TableMetadata;
     dopChars?: MainChar[];
+    mainChars?: MainChar[];
     selectedRowIndices: number[];
 }
 

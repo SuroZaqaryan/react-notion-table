@@ -4,6 +4,8 @@ import { Trash2 } from 'lucide-react';
 import { Button, Tooltip, Typography } from 'antd';
 import EditableParagraph from "./EditableParagraph";
 
+const { Title } = Typography;
+
 function TableWrapper({
   state,
   dispatch
@@ -32,7 +34,10 @@ function TableWrapper({
             value={state.metadata.chapterName}
             onChange={handleMetadataChange("chapterName")}
             as={Typography.Title}
-            asProps={{ level: 3 }}
+            asProps={{ level: 4 }}
+            label={<Title level={5} style={{ margin: 0, fontWeight: 400, color: '#7c7c7c' }}>
+              Характеристики закупаемых товаров:
+            </Title>}
           />
 
           <EditableParagraph
@@ -40,6 +45,9 @@ function TableWrapper({
             onChange={handleMetadataChange("itemName")}
             as={Typography.Title}
             asProps={{ level: 5 }}
+            label={<Title level={5} style={{ margin: 0, fontWeight: 400, color: '#7c7c7c' }}>
+              Наименование товара:
+            </Title>}
           />
 
           <EditableParagraph
@@ -47,6 +55,9 @@ function TableWrapper({
             onChange={handleMetadataChange("okpd2")}
             as={Typography.Title}
             asProps={{ level: 5 }}
+            label={<Title level={5} style={{ margin: 0, fontWeight: 400, color: '#7c7c7c' }}>
+              ОКПД2: 
+            </Title>}
           />
         </div>
 
