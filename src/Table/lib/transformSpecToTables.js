@@ -2,19 +2,11 @@ function transformSpecToTables(spec) {
   const tables = [];
 
   spec.characteristics?.forEach((item) => {
-
-    // options для name из dop_chars
-    const nameOptions = (item.dop_chars || []).map(char => ({
-      label: char.name,
-      value: char.name,
-      backgroundColor: "#E4E4E7",
-    }));
-
     const rows = item.main_chars.map((char) => {
       const options = char.values.map((v) => ({
         label: v.value,
         value: v.value,
-        backgroundColor: "#E4E4E7",
+        backgroundColor: "#FFF",
       }));
 
       const popular = char.values.find((v) => v.is_popular);
@@ -22,13 +14,13 @@ function transformSpecToTables(spec) {
       const nameOptionsFromDop = (item.dop_chars || []).map(dop => ({
         label: dop.name,
         value: dop.name,
-        backgroundColor: "#E4E4E7",
+        backgroundColor: "#f0f0f091",
       }));
 
       const initialNameOption = {
         label: char.name,
         value: char.name,
-        backgroundColor: "#E4E4E7",
+        backgroundColor: "#FFF",
       };
 
       const nameOptions = [

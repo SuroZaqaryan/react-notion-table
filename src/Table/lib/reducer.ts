@@ -65,21 +65,29 @@ function tableReducer(state: TableState, action: TableAction): TableState {
 
     case 'ADD_OPTION_TO_ROW': {
       const newData = [...state.data];
-      const row = newData[action.rowIndex];
-      const existing = row.options || [];
+      const row = { ...newData[action.rowIndex] };
 
-      const newOptions = [...existing, action.option].filter(
-        (opt, i, self) => i === self.findIndex(o => o.label === opt.label)
-      );
+      const addUniqueOption = (options: any[] = []) =>
+        [...options, action.option].filter(
+          (opt, i, self) => self.findIndex(o => o.label === opt.label) === i
+        );
 
-      row.options = newOptions;
+      if (action.target === 'name') {
+        row.nameOptions = addUniqueOption(row.nameOptions);
+      } else {
+        row.options = addUniqueOption(row.options);
+      }
+
+      newData[action.rowIndex] = row;
 
       return {
         ...state,
         skipReset: true,
-        data: newData
+        data: newData,
       };
     }
+
+
 
     case 'INSERT_ROW': {
       const newData = [...state.data];
@@ -98,14 +106,14 @@ function tableReducer(state: TableState, action: TableAction): TableState {
         const dopNameOptions = relevantDopChars.map(char => ({
           label: char.name,
           value: char.name,
-          backgroundColor: '#E4E4E7',
+          backgroundColor: '#FFF',
         }));
 
         const initialNameOption = currentMainChar
           ? {
             label: currentMainChar.name,
             value: currentMainChar.name,
-            backgroundColor: '#E4E4E7',
+            backgroundColor: '#FFF',
           }
           : null;
 
@@ -117,13 +125,13 @@ function tableReducer(state: TableState, action: TableAction): TableState {
           char.values.map(v => ({
             label: v.value,
             value: v.value,
-            backgroundColor: '#E4E4E7',
+            backgroundColor: '#FFF',
           }))
         );
 
         const newRow: TableRow = {
           item_name: currentRow.item_name,
-          name: '', 
+          name: '',
           value: '',
           unit: '',
           options: allValueOptions,
@@ -227,7 +235,7 @@ function tableReducer(state: TableState, action: TableAction): TableState {
               if (row[action.columnId]) {
                 options.push({
                   label: row[action.columnId] as string,
-                  backgroundColor: '#E4E4E7',
+                  backgroundColor: '#FFF',
                 });
               }
             });
@@ -315,7 +323,7 @@ function tableReducer(state: TableState, action: TableAction): TableState {
       const options = targetChar?.values.map(v => ({
         label: v.value,
         value: v.value,
-        backgroundColor: '#E4E4E7',
+        backgroundColor: '#FFF',
       })) ?? [];
 
       const popularValue = targetChar?.values.find(v => v.is_popular)?.value || '';

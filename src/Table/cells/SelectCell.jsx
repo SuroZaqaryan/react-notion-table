@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { usePopper } from 'react-popper';
 import Badge from '../ui/Badge';
-import { grey } from '../utils/colors';
 import { Plus } from 'lucide-react';
 import { ActionTypes } from '../utils/utils';
 
@@ -54,11 +53,6 @@ export default function SelectCell({
     }
   }, [addSelectRef, showAdd]);
 
-  function getColor() {
-    let match = options.find(option => option.label === value.value);
-    return (match && match.backgroundColor) || grey(200);
-  }
-
   function handleAddOption(e) {
     setShowAdd(true);
   }
@@ -67,17 +61,19 @@ export default function SelectCell({
     if (e.key === 'Enter') {
       const newLabel = e.target.value.trim();
       if (newLabel !== '') {
+        const option = { label: newLabel, backgroundColor: '#fff' }
+
         dataDispatch({
           type: 'ADD_OPTION_TO_ROW',
           rowIndex,
-          option: {
-            label: newLabel,
-            backgroundColor: '#E4E4E7',
-          }
+          option,
+          target: columnId,
         });
 
         setValue({ value: newLabel, update: true });
+        handleOptionClick(option)
       }
+      
       setShowAdd(false);
       setShowSelect(false);
     }
@@ -87,16 +83,17 @@ export default function SelectCell({
   function handleOptionBlur(e) {
     const newLabel = e.target.value.trim();
     if (newLabel !== '') {
+      const option = { label: newLabel, backgroundColor: '#fff' }
+
       dataDispatch({
         type: 'ADD_OPTION_TO_ROW',
         rowIndex,
-        option: {
-          label: newLabel,
-          backgroundColor: '#E4E4E7',
-        }
+        option,
+        target: columnId,
       });
 
       setValue({ value: newLabel, update: true });
+      handleOptionClick(option)
     }
     setShowAdd(false);
   }
@@ -129,7 +126,7 @@ export default function SelectCell({
         onClick={() => setShowSelect(true)}
       >
         {value.value && (
-          <Badge value={value.value} backgroundColor={getColor()} />
+          <Badge value={value.value} />
         )}
       </div>
       {showSelect && (
@@ -196,7 +193,7 @@ export default function SelectCell({
                 >
                   <Badge
                     value={option.label}
-                    backgroundColor={option.backgroundColor}
+                    backgroundColor={'#E4E4E7'}
                   />
                 </div>
               ))}

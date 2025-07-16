@@ -1,4 +1,4 @@
-export default function Badge({ value, backgroundColor }) {
+export default function Badge({ value, backgroundColor = '#fff' }) {
   return (
     <span
       className="font-weight-400 d-inline-block color-grey-800 border-radius-sm text-transform-capitalize"

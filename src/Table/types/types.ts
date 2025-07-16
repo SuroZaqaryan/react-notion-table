@@ -130,10 +130,9 @@ export type ReducerAction =
         newOrder: string[]; // array of table IDs in new order
     };
 
-// types.ts
 export type TableAction =
     | { type: "update_data"; data: TableRow[] }
-    | { type: "ADD_OPTION_TO_ROW"; rowIndex: number; option: { label: string; value: string; backgroundColor: string } }
+    | { type: "ADD_OPTION_TO_ROW"; rowIndex: number; option: { label: string; value: string; backgroundColor: string }, target: 'name' | 'value' }
     | { type: "INSERT_ROW"; triggeredFromRow: number }
     | { type: "toggle_row_selection"; rowIndex: number }
     | { type: "delete_selected_rows" }

@@ -92,10 +92,10 @@ function EditableParagraph({ value, onChange, label, as: Component = 'span', asP
                     </Tooltip>
                 </Flex>
 
-                <Flex gap={4} wrap align='flex-end'>
+                <Flex gap={4} wrap={!editing} align='flex-end'>
                     {
                         label &&
-                        <div style={{ display: 'flex', alignItems: 'center', marginRight: 10, whiteSpace: 'normal' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', marginRight: 10, whiteSpace: editing ? 'nowrap' : 'normal' }}>
                             {label}
                         </div>
                     }
