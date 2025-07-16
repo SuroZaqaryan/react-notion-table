@@ -1,4 +1,5 @@
 import { shortId } from "../utils/utils";
+export const initialState = null;
 
 export function reducer(state, action) {
   switch (action.type) {
@@ -26,6 +27,42 @@ export function reducer(state, action) {
         data: newData
       };
     }
+
+    case "init":
+      return {
+        ...action.payload.commonFields,
+        bottomSections: action.payload.bottomSections,
+        tables: action.payload.tables,
+      };
+
+    case "update_common_field":
+      return {
+        ...state,
+        [action.key]: action.value,
+        skipReset: true,
+      };
+
+    case "update_bottom_section":
+      const updatedSections = [...state.bottomSections];
+      updatedSections[action.index] = {
+        ...updatedSections[action.index],
+        [action.key]: action.value,
+      };
+      return {
+        ...state,
+        bottomSections: updatedSections,
+        skipReset: true,
+      };
+
+    case "update_table":
+      return {
+        ...state,
+        tables: state.tables.map((table) =>
+          table.id === action.tableId
+            ? { ...table, state: reducer(table.state, action.action) }
+            : table
+        ),
+      };
 
     case 'INSERT_ROW': {
       const newData = [...state.data];

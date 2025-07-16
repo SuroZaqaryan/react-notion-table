@@ -1,77 +1,47 @@
-import { useState, useEffect } from "react";
+import { useReducer, useEffect } from "react";
+import transformSpecToTables from './lib/transformSpecToTables';
 import TableWrapper from "./ui/TableWrapper";
 import TopInfoEditor from "./ui/TopInfoEditor";
 import BottomInfoEditor from "./ui/BottomInfoEditor";
-import { reducer } from "./lib/reducer";
+import { reducer, initialState } from "./lib/reducer";
 import columns from "./columns/columns";
 
-function transformSpecToTables(spec) {
-  const tables = [];
-
-  spec.characteristics?.forEach((item) => {
-    const rows = item.main_chars.map((char) => {
-      const options = char.values.map((v) => ({
-        label: v.value,
-        value: v.value,
-        backgroundColor: "#E4E4E7",
-      }));
-
-      const popular = char.values.find((v) => v.is_popular);
-
-      return {
-        item_name: item.item_name,
-        name: char.name,
-        value: popular?.value || char.values[0].value,
-        unit: char.unit || "",
-        options,
-      };
-    });
-
-    tables.push({
-      id: `${item.item_name}-${Math.random().toString(36).slice(2)}`,
-      chapterName: item.chapter_name,
-      itemName: item.item_name,
-      okpd2: item.OKPD2,
-      data: rows,
-      dopChars: item.dop_chars || [],
-    });
-  });
-
-  return tables;
-}
-
 function MainTableView() {
-  const [specState, setSpecState] = useState(null);
-  const [tablesState, setTablesState] = useState([]);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        // Предполагается, что exampleSpec.json лежит в public/
         const response = await fetch("/exampleSpec.json");
         const data = await response.json();
 
-        setSpecState(data);
-
         const tables = transformSpecToTables(data);
 
-        setTablesState(
-          tables.map((table) => ({
-            id: table.id,
-            state: {
-              columns,
-              data: table.data,
-              skipReset: false,
-              metadata: {
-                chapterName: table.chapterName,
-                itemName: table.itemName,
-                okpd2: table.okpd2,
-              },
-              dopChars: table.dopChars,
-              selectedRowIndices: [],
+        dispatch({
+          type: "init",
+          payload: {
+            commonFields: {
+              date: data.date,
+              address: data.address,
             },
-          }))
-        );
+            bottomSections: [data.warranty, data.payment],
+            tables: tables.map((table) => ({
+              id: table.id,
+              state: {
+                columns,
+                data: table.data,
+                skipReset: false,
+                metadata: {
+                  chapterName: table.chapterName,
+                  itemName: table.itemName,
+                  okpd2: table.okpd2,
+                },
+                dopChars: table.dopChars,
+                selectedRowIndices: [],
+              },
+            })),
+          },
+        });
       } catch (error) {
         console.error("Ошибка загрузки данных", error);
       }
@@ -80,40 +50,25 @@ function MainTableView() {
     fetchData();
   }, []);
 
-  if (!specState) {
+  if (!state) {
     return <div>Загрузка данных...</div>;
   }
 
   const handleTopChange = (key, value) => {
-    setSpecState((prev) => ({ ...prev, [key]: value }));
+    dispatch({ type: "update_common_field", key, value });
   };
 
   const handleBottomChange = (index, key, value) => {
-    const keys = ["warranty", "payment"];
-    setSpecState((prev) => ({
-      ...prev,
-      [keys[index]]: {
-        ...prev[keys[index]],
-        [key]: value,
-      },
-    }));
+    dispatch({ type: "update_bottom_section", index, key, value });
   };
 
   const handleTableDispatch = (tableId, action) => {
-    setTablesState((prev) =>
-      prev.map((table) => {
-        if (table.id === tableId) {
-          const newState = reducer(table.state, action);
-          return { ...table, state: newState };
-        }
-        return table;
-      })
-    );
+    dispatch({ type: "update_table", tableId, action });
   };
 
-  function transformFullStateToSpec() {
-    const characteristics = tablesState.map(({ state }) => {
-      const { metadata, data } = state;
+  const transformFullStateToSpec = () => {
+    const characteristics = state.tables.map(({ state: table }) => {
+      const { metadata, data } = table;
 
       const mainCharMap = new Map();
       const dopCharMap = new Map();
@@ -146,42 +101,44 @@ function MainTableView() {
     });
 
     const payload = {
-      date: specState.date,
-      address: specState.address,
+      date: state.date,
+      address: state.address,
+      warranty: state.bottomSections[0],
+      payment: state.bottomSections[1],
       characteristics,
-      warranty: specState.warranty,
-      payment: specState.payment,
     };
 
     console.log("FULL PAYLOAD", payload);
-  }
+  };
 
   return (
     <div className="table-group">
-      <button onClick={transformFullStateToSpec}>Собрать полный payload</button>
+      <button onClick={transformFullStateToSpec}>
+        Собрать полный payload
+      </button>
 
       <TopInfoEditor
-        date={specState.date}
-        address={specState.address}
+        date={state.date}
+        address={state.address}
         onChange={handleTopChange}
       />
 
-      {tablesState.map(({ id, state }) => (
+      {state.tables.map(({ id, state: tableState }) => (
         <TableWrapper
           key={id}
           id={id}
-          chapterName={state.metadata.chapterName}
-          itemName={state.metadata.itemName}
-          okpd2={state.metadata.okpd2}
-          data={state.data}
-          dopChars={state.dopChars}
-          state={state}
+          chapterName={tableState.metadata.chapterName}
+          itemName={tableState.metadata.itemName}
+          okpd2={tableState.metadata.okpd2}
+          data={tableState.data}
+          dopChars={tableState.dopChars}
+          state={tableState}
           dispatch={(action) => handleTableDispatch(id, action)}
         />
       ))}
 
       <BottomInfoEditor
-        sections={[specState.warranty, specState.payment]}
+        sections={state.bottomSections}
         onChange={handleBottomChange}
       />
     </div>
