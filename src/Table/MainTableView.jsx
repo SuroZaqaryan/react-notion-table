@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect, useRef } from "react";
 import transformSpecToTables from './lib/transformSpecToTables';
 import TableWrapper from "./ui/TableWrapper";
 import TopInfoEditor from "./ui/TopInfoEditor";
@@ -8,6 +8,8 @@ import columns from "./columns/columns";
 
 function MainTableView() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const lastPayloadRef = useRef(null);
+
 
   useEffect(() => {
     if (!state) return;
@@ -59,7 +61,10 @@ function MainTableView() {
       characteristics,
     };
 
-    console.log("FULL PAYLOAD", payload);
+    if (JSON.stringify(payload) !== lastPayloadRef.current) {
+      console.log("FULL PAYLOAD", payload);
+      lastPayloadRef.current = JSON.stringify(payload);
+    }
   }, [state]);
 
 
