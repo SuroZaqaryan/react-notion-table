@@ -90,8 +90,56 @@ function MainTableView() {
 
   const tables = transformSpecToTables(specState);
 
+  function transformFullStateToSpec() {
+    const characteristics = tablesState.map(({ state }) => {
+      const { metadata, data, dopChars } = state;
+
+      const mainCharMap = new Map();
+      const dopCharMap = new Map();
+
+      for (const row of data) {
+        const key = row.name || '';
+        const targetMap = row.isNewRow ? dopCharMap : mainCharMap;
+
+        if (!targetMap.has(key)) {
+          targetMap.set(key, {
+            name: key,
+            unit: row.unit || '',
+            values: [],
+          });
+        }
+
+        targetMap.get(key).values.push({
+          value: row.value || '',
+          is_popular: !row.isNewRow,
+        });
+      }
+
+      return {
+        chapter_name: metadata.chapterName,
+        item_name: metadata.itemName,
+        OKPD2: metadata.okpd2,
+        main_chars: Array.from(mainCharMap.values()),
+        dop_chars: Array.from(dopCharMap.values()),
+      };
+    });
+
+    const payload = {
+      date: specState.date,
+      address: specState.address,
+      characteristics,
+      warranty: specState.warranty,
+      payment: specState.payment,
+    };
+
+    console.log("FULL PAYLOAD", payload);
+  }
+
+
   return (
     <div className="table-group">
+      <button onClick={transformFullStateToSpec}>Собрать полный payload</button>
+
       {/* Дата и Адрес */}
       <TopInfoEditor
         date={specState.date}

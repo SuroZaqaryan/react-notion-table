@@ -24,52 +24,8 @@ function TableWrapper({
     dispatch({ type: 'delete_selected_rows' });
   };
 
-  const transform = () => {
-    function transformStateToSpec(state) {
-      const { metadata, data } = state;
-
-      const mainCharMap = new Map();
-      const dopCharMap = new Map();
-
-      for (const row of data) {
-        const key = row.name || '';
-
-        const targetMap = row.isNewRow ? dopCharMap : mainCharMap;
-
-        if (!targetMap.has(key)) {
-          targetMap.set(key, {
-            name: key,
-            unit: row.unit || '',
-            values: [],
-          });
-        }
-
-        targetMap.get(key).values.push({
-          value: row.value || '',
-          is_popular: !row.isNewRow,
-        });
-      }
-
-      return {
-        characteristics: [
-          {
-            chapter_name: metadata.chapterName,
-            item_name: metadata.itemName,
-            OKPD2: metadata.okpd2,
-            main_chars: Array.from(mainCharMap.values()),
-            dop_chars: Array.from(dopCharMap.values()),
-          },
-        ],
-      };
-    }
-
-    const payload = transformStateToSpec(state);
-    console.log('payload', payload);
-  }
-
   return (
     <div className="table-wrapper">
-      <button onClick={transform}>123</button>
       <div className="editable-wrapper">
         <div className="editable-fields">
           <EditableParagraph
