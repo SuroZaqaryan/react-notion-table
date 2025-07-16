@@ -10,6 +10,62 @@ function MainTableView() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
+    if (!state) return;
+
+    const characteristics = state.tables.map(({ state: table }) => {
+      const { metadata, data } = table;
+
+      const mainCharMap = new Map();
+      const dopCharMap = new Map();
+
+      for (const [idx, row] of data.entries()) {
+        let key;
+        if (row.isNewRow) {
+          // Для новых строк используем уникальный ключ, например, индекс с префиксом
+          key = `newRow_${idx}`;
+        } else {
+          key = row.name || "";
+        }
+
+        const targetMap = row.isNewRow ? dopCharMap : mainCharMap;
+
+        if (!targetMap.has(key)) {
+          targetMap.set(key, {
+            // Для новых строк имя может быть пустым или как есть
+            name: row.isNewRow ? row.name || "" : key,
+            unit: row.unit || "",
+            values: [],
+          });
+        }
+
+        targetMap.get(key).values.push({
+          value: row.value || "",
+          is_popular: !row.isNewRow,
+        });
+      }
+
+      return {
+        chapter_name: metadata.chapterName,
+        item_name: metadata.itemName,
+        OKPD2: metadata.okpd2,
+        main_chars: Array.from(mainCharMap.values()),
+        dop_chars: Array.from(dopCharMap.values()),
+      };
+    });
+
+    const payload = {
+      date: state.date,
+      address: state.address,
+      warranty: state.bottomSections?.[0],
+      payment: state.bottomSections?.[1],
+      characteristics,
+    };
+
+    console.log("FULL PAYLOAD", payload);
+  }, [state]);
+
+
+  useEffect(() => {
     async function fetchData() {
       try {
         const response = await fetch("/exampleSpec.json");
@@ -66,57 +122,8 @@ function MainTableView() {
     dispatch({ type: "update_table", tableId, action });
   };
 
-  const transformFullStateToSpec = () => {
-    const characteristics = state.tables.map(({ state: table }) => {
-      const { metadata, data } = table;
-
-      const mainCharMap = new Map();
-      const dopCharMap = new Map();
-
-      for (const row of data) {
-        const key = row.name || "";
-        const targetMap = row.isNewRow ? dopCharMap : mainCharMap;
-
-        if (!targetMap.has(key)) {
-          targetMap.set(key, {
-            name: key,
-            unit: row.unit || "",
-            values: [],
-          });
-        }
-
-        targetMap.get(key).values.push({
-          value: row.value || "",
-          is_popular: !row.isNewRow,
-        });
-      }
-
-      return {
-        chapter_name: metadata.chapterName,
-        item_name: metadata.itemName,
-        OKPD2: metadata.okpd2,
-        main_chars: Array.from(mainCharMap.values()),
-        dop_chars: Array.from(dopCharMap.values()),
-      };
-    });
-
-    const payload = {
-      date: state.date,
-      address: state.address,
-      warranty: state.bottomSections[0],
-      payment: state.bottomSections[1],
-      characteristics,
-    };
-
-    console.log("FULL PAYLOAD", payload);
-  };
-
   return (
     <div className="table-group">
-      <button onClick={transformFullStateToSpec}>
-        Собрать полный payload
-      </button>
-
       <TopInfoEditor
         date={state.date}
         address={state.address}
