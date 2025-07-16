@@ -295,11 +295,14 @@ function tableReducer(state: TableState, action: TableAction): TableState {
       const { rowIndex, name } = action;
 
       const targetChar = state.dopChars?.find(char => char.name === name);
+
       const options = targetChar?.values.map(v => ({
         label: v.value,
         value: v.value,
         backgroundColor: '#E4E4E7',
       })) ?? [];
+
+      const popularValue = targetChar?.values.find(v => v.is_popular)?.value || '';
 
       return {
         ...state,
@@ -310,7 +313,7 @@ function tableReducer(state: TableState, action: TableAction): TableState {
               ...row,
               name,
               options,
-              value: '', // Сброс предыдущего значения
+              value: popularValue,
             }
             : row
         ),

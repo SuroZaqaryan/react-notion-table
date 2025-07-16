@@ -27,10 +27,11 @@ export default function Cell({
 
     switch (dataType) {
       case DataTypes.TEXT:
-        if (id === 'name' && original.isNewRow && original.nameOptions) {
-          return <SelectCell {...cellProps} options={original.nameOptions} />;
+        if (id === 'name') {
+          return <SelectCell {...cellProps} options={original.nameOptions || []} />;
         }
         return <TextCell {...cellProps} />;
+
       case DataTypes.NUMBER:
         return <NumberCell {...cellProps} />;
       case DataTypes.SELECT:

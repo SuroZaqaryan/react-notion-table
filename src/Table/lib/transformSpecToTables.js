@@ -2,6 +2,14 @@ function transformSpecToTables(spec) {
   const tables = [];
 
   spec.characteristics?.forEach((item) => {
+
+    // options для name из dop_chars
+    const nameOptions = (item.dop_chars || []).map(char => ({
+      label: char.name,
+      value: char.name,
+      backgroundColor: "#E4E4E7",
+    }));
+
     const rows = item.main_chars.map((char) => {
       const options = char.values.map((v) => ({
         label: v.value,
@@ -17,6 +25,7 @@ function transformSpecToTables(spec) {
         value: popular?.value || char.values[0].value,
         unit: char.unit || "",
         options,
+        nameOptions,           
       };
     });
 
