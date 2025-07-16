@@ -1,9 +1,7 @@
-import "./styles/style.css";
-import exampleSpec from "./exampleSpec.json";
+import { useState, useEffect } from "react";
 import TableWrapper from "./ui/TableWrapper";
 import TopInfoEditor from "./ui/TopInfoEditor";
 import BottomInfoEditor from "./ui/BottomInfoEditor";
-import { useState } from "react";
 import { reducer } from "./lib/reducer";
 import columns from "./columns/columns";
 
@@ -43,25 +41,48 @@ function transformSpecToTables(spec) {
 }
 
 function MainTableView() {
-  const [specState, setSpecState] = useState(exampleSpec);
-  const [tablesState, setTablesState] = useState(() => {
-    const tables = transformSpecToTables(exampleSpec);
-    return tables.map(table => ({
-      id: table.id,
-      state: {
-        columns,
-        data: table.data,
-        skipReset: false,
-        metadata: {
-          chapterName: table.chapterName,
-          itemName: table.itemName,
-          okpd2: table.okpd2,
-        },
-        dopChars: table.dopChars,
-        selectedRowIndices: [],
+  const [specState, setSpecState] = useState(null);
+  const [tablesState, setTablesState] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        // Предполагается, что exampleSpec.json лежит в public/
+        const response = await fetch("/exampleSpec.json");
+        const data = await response.json();
+
+        setSpecState(data);
+
+        const tables = transformSpecToTables(data);
+
+        setTablesState(
+          tables.map((table) => ({
+            id: table.id,
+            state: {
+              columns,
+              data: table.data,
+              skipReset: false,
+              metadata: {
+                chapterName: table.chapterName,
+                itemName: table.itemName,
+                okpd2: table.okpd2,
+              },
+              dopChars: table.dopChars,
+              selectedRowIndices: [],
+            },
+          }))
+        );
+      } catch (error) {
+        console.error("Ошибка загрузки данных", error);
       }
-    }));
-  });
+    }
+
+    fetchData();
+  }, []);
+
+  if (!specState) {
+    return <div>Загрузка данных...</div>;
+  }
 
   const handleTopChange = (key, value) => {
     setSpecState((prev) => ({ ...prev, [key]: value }));
@@ -79,38 +100,38 @@ function MainTableView() {
   };
 
   const handleTableDispatch = (tableId, action) => {
-    setTablesState(prev => prev.map(table => {
-      if (table.id === tableId) {
-        const newState = reducer(table.state, action);
-        return { ...table, state: newState };
-      }
-      return table;
-    }));
+    setTablesState((prev) =>
+      prev.map((table) => {
+        if (table.id === tableId) {
+          const newState = reducer(table.state, action);
+          return { ...table, state: newState };
+        }
+        return table;
+      })
+    );
   };
-
-  const tables = transformSpecToTables(specState);
 
   function transformFullStateToSpec() {
     const characteristics = tablesState.map(({ state }) => {
-      const { metadata, data, dopChars } = state;
+      const { metadata, data } = state;
 
       const mainCharMap = new Map();
       const dopCharMap = new Map();
 
       for (const row of data) {
-        const key = row.name || '';
+        const key = row.name || "";
         const targetMap = row.isNewRow ? dopCharMap : mainCharMap;
 
         if (!targetMap.has(key)) {
           targetMap.set(key, {
             name: key,
-            unit: row.unit || '',
+            unit: row.unit || "",
             values: [],
           });
         }
 
         targetMap.get(key).values.push({
-          value: row.value || '',
+          value: row.value || "",
           is_popular: !row.isNewRow,
         });
       }
@@ -135,37 +156,30 @@ function MainTableView() {
     console.log("FULL PAYLOAD", payload);
   }
 
-
   return (
     <div className="table-group">
       <button onClick={transformFullStateToSpec}>Собрать полный payload</button>
 
-      {/* Дата и Адрес */}
       <TopInfoEditor
         date={specState.date}
         address={specState.address}
         onChange={handleTopChange}
       />
 
-      {/* Таблицы */}
-      {tablesState.map(({ id, state }) => {
-        const tableData = tables.find(t => t.id === id);
-        return (
-          <TableWrapper
-            key={id}
-            id={id}
-            chapterName={state.metadata.chapterName}
-            itemName={state.metadata.itemName}
-            okpd2={state.metadata.okpd2}
-            data={state.data}
-            dopChars={state.dopChars}
-            state={state}
-            dispatch={(action) => handleTableDispatch(id, action)}
-          />
-        );
-      })}
+      {tablesState.map(({ id, state }) => (
+        <TableWrapper
+          key={id}
+          id={id}
+          chapterName={state.metadata.chapterName}
+          itemName={state.metadata.itemName}
+          okpd2={state.metadata.okpd2}
+          data={state.data}
+          dopChars={state.dopChars}
+          state={state}
+          dispatch={(action) => handleTableDispatch(id, action)}
+        />
+      ))}
 
-      {/* Оплата и Гарантия */}
       <BottomInfoEditor
         sections={[specState.warranty, specState.payment]}
         onChange={handleBottomChange}
