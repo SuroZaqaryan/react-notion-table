@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Flex, Input, Typography, Button, theme } from 'antd';
+import { Flex, Input, Typography, Button, Tooltip, theme } from 'antd';
 import { Pencil, WandSparkles, Sparkles, Plus, CircleArrowUp } from 'lucide-react';
 
 const { Text } = Typography;
@@ -62,32 +62,37 @@ function EditableParagraph({ value, onChange, label, as: Component = 'span', asP
         <div style={{ position: 'relative' }}>
             <Flex align="center" gap={8}>
                 <Flex style={{ position: 'relative', right: '1.5rem' }} gap={14}>
-                    <Button
-                        type="text"
-                        onClick={() => setShowPopup(!showPopup)}
-                        style={{ background: showPopup ? '#E4E4E7' : '#fff' }}
-                        icon={
-                            <WandSparkles
-                                style={{ display: 'flex', cursor: 'pointer' }}
-                                size={16}
-                                color="#44403C"
-                            />
-                        }
-                    />
+                    <Tooltip title="Редактировать с помощью ИИ">
+                        <Button
+                            type="text"
+                            onClick={() => setShowPopup(!showPopup)}
+                            style={{ background: showPopup ? '#E4E4E7' : '#fff' }}
+                            icon={
+                                <WandSparkles
+                                    style={{ display: 'flex', cursor: 'pointer' }}
+                                    size={16}
+                                    color="gray"
+                                />
+                            }
+                        />
+                    </Tooltip>
 
-                    <Button
-                        type="text"
-                        onClick={() => setEditing(true)}
-                        style={{ background: editing ? '#E4E4E7' : '#fff' }}
 
-                        icon={
-                            <Pencil
-                                style={{ display: 'flex', cursor: 'pointer' }}
-                                size={16}
-                                color="#44403C"
-                            />
-                        }
-                    />
+                    <Tooltip title="Редактировать вручную">
+                        <Button
+                            type="text"
+                            onClick={() => setEditing(true)}
+                            style={{ background: editing ? '#E4E4E7' : '#fff' }}
+
+                            icon={
+                                <Pencil
+                                    style={{ display: 'flex', cursor: 'pointer' }}
+                                    size={16}
+                                    color="gray"
+                                />
+                            }
+                        />
+                    </Tooltip>
                 </Flex>
 
                 {label && (
