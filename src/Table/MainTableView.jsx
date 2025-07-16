@@ -21,17 +21,15 @@ function MainTableView() {
       for (const [idx, row] of data.entries()) {
         let key;
         if (row.isNewRow) {
-          // Для новых строк используем уникальный ключ, например, индекс с префиксом
           key = `newRow_${idx}`;
         } else {
           key = row.name || "";
         }
 
-        const targetMap = row.isNewRow ? dopCharMap : mainCharMap;
+        const targetMap = mainCharMap;
 
         if (!targetMap.has(key)) {
           targetMap.set(key, {
-            // Для новых строк имя может быть пустым или как есть
             name: row.isNewRow ? row.name || "" : key,
             unit: row.unit || "",
             values: [],
