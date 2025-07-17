@@ -17,6 +17,7 @@ import {
 
 function MainTableView() {
   const [state, dispatch] = useReducer(reducer, initialState as AppState);
+  const isFirstRender = useRef(true);
   const lastPayloadRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -33,6 +34,14 @@ function MainTableView() {
     };
 
     const payloadString = JSON.stringify(payload);
+
+    // Пропуск первый рендер
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      lastPayloadRef.current = payloadString;
+      return;
+    }
+
     if (payloadString !== lastPayloadRef.current) {
       console.log("FULL PAYLOAD", payload);
       lastPayloadRef.current = payloadString;

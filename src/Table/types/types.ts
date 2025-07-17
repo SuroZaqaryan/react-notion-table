@@ -1,3 +1,4 @@
+import { Column } from 'react-table';
 export interface ValueOption {
     value: string;
     is_popular: boolean;
@@ -70,7 +71,7 @@ export interface TableMetadata {
 }
 
 export interface TableState {
-    columns: TableColumn[];
+    columns: Column[];
     data: TableRow[];
     skipReset: boolean;
     metadata: TableMetadata;

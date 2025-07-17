@@ -37,15 +37,15 @@ const defaultColumn = {
 const Row: React.FC<RowProps> = ({ row, index, prepareRow, moveRow, selectedRowIndices }) => {
   const dropRef = useRef<HTMLDivElement>(null);
 
-  const [{ isDragging }, drag, preview] = useDrag(() => ({
+  const [{ isDragging }, drag, preview] = useDrag({
     type: 'row',
     item: { type: 'row', index },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-  }), [index]);
+  });
 
-  const [{ isOver }, drop] = useDrop(() => ({
+  const [{ isOver }, drop] = useDrop({
     accept: 'row',
     hover(item: any, monitor) {
       if (!dropRef.current) return;
@@ -67,7 +67,7 @@ const Row: React.FC<RowProps> = ({ row, index, prepareRow, moveRow, selectedRowI
     collect: (monitor) => ({
       isOver: monitor.isOver(),
     }),
-  }), [index]);
+  });
 
   drop(preview(dropRef));
   prepareRow(row);
