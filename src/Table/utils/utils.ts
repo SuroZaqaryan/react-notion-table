@@ -11,7 +11,7 @@ export const ActionTypes = Object.freeze({
   ADD_COLUMN_TO_RIGHT: 'add_column_to_right',
   DELETE_COLUMN: 'delete_column',
   ENABLE_RESET: 'enable_reset',
-});
+} as const);
 
 export const DataTypes = Object.freeze({
   TEXT: 'text',
@@ -25,3 +25,5 @@ export const DataTypes = Object.freeze({
 export const Constants = Object.freeze({
   ADD_COLUMN_ID: 999999,
 });
+
+export type DataType = typeof DataTypes[keyof typeof DataTypes];

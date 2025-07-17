@@ -1,9 +1,24 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import { createPortal } from 'react-dom';
 import { usePopper } from 'react-popper';
 import Badge from '../ui/Badge';
 import { Plus } from 'lucide-react';
 import { ActionTypes } from '../utils/utils';
+import { TableAction } from '../types/types';
+
+interface LabeledOption {
+  label: string;
+  value: string;
+  backgroundColor: string;
+}
+
+interface SelectCellProps {
+  initialValue: string;
+  options: LabeledOption[];
+  columnId: string;
+  rowIndex: number;
+  dataDispatch: Dispatch<TableAction>;
+}
 
 export default function SelectCell({
   initialValue,
@@ -11,26 +26,38 @@ export default function SelectCell({
   columnId,
   rowIndex,
   dataDispatch,
-}) {
-  const [selectRef, setSelectRef] = useState(null);
-  const [selectPop, setSelectPop] = useState(null);
+}: SelectCellProps) {
+  const [selectRef, setSelectRef] = useState<HTMLElement | null>(null);
+  const [selectPop, setSelectPop] = useState<HTMLElement | null>(null);
   const [showSelect, setShowSelect] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
-  const [addSelectRef, setAddSelectRef] = useState(null);
+  const [addSelectRef, setAddSelectRef] = useState<HTMLInputElement | null>(null);
+
   const { styles, attributes } = usePopper(selectRef, selectPop, {
     placement: 'bottom-start',
     strategy: 'fixed',
   });
-  const [value, setValue] = useState({ value: initialValue, update: false });
-  const getPortalRoot = () => {
+
+  const [value, setValue] = useState<{ value: string; update: boolean }>({
+    value: initialValue,
+    update: false,
+  });
+
+  const getPortalRoot = (): HTMLElement => {
     let portalRoot = document.querySelector('#popper-portal');
     if (!portalRoot) {
-      portalRoot = document.createElement('div');
-      portalRoot.id = 'popper-portal';
-      document.body.appendChild(portalRoot);
+      const newPortalRoot = document.createElement('div');
+      newPortalRoot.id = 'popper-portal';
+      document.body.appendChild(newPortalRoot);
+      return newPortalRoot;
+    }
+    if (!(portalRoot instanceof HTMLElement)) {
+      throw new Error('#popper-portal is not an HTMLElement');
     }
     return portalRoot;
   };
+
+
   useEffect(() => {
     setValue({ value: initialValue, update: false });
   }, [initialValue]);
@@ -53,53 +80,51 @@ export default function SelectCell({
     }
   }, [addSelectRef, showAdd]);
 
-  function handleAddOption(e) {
+  function handleAddOption() {
     setShowAdd(true);
   }
 
-  function handleOptionKeyDown(e) {
+  function handleOptionKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
-      const newLabel = e.target.value.trim();
+      const newLabel = e.currentTarget.value.trim();
       if (newLabel !== '') {
-        const option = { label: newLabel, backgroundColor: '#fff' }
+        const option = { label: newLabel, value: newLabel, backgroundColor: '#fff' };
 
         dataDispatch({
           type: 'ADD_OPTION_TO_ROW',
           rowIndex,
           option,
-          target: columnId,
+          target: columnId === 'name' || columnId === 'value' ? columnId : 'value',
         });
 
         setValue({ value: newLabel, update: true });
-        handleOptionClick(option)
+        handleOptionClick(option);
       }
-      
+
       setShowAdd(false);
       setShowSelect(false);
     }
   }
 
-
-  function handleOptionBlur(e) {
-    const newLabel = e.target.value.trim();
+  function handleOptionBlur(e: React.FocusEvent<HTMLInputElement>) {
+    const newLabel = e.currentTarget.value.trim();
     if (newLabel !== '') {
-      const option = { label: newLabel, backgroundColor: '#fff' }
+      const option = { label: newLabel, value: newLabel, backgroundColor: '#fff' };
 
       dataDispatch({
         type: 'ADD_OPTION_TO_ROW',
         rowIndex,
         option,
-        target: columnId,
+        target: columnId === 'name' || columnId === 'value' ? columnId : 'value',
       });
 
       setValue({ value: newLabel, update: true });
-      handleOptionClick(option)
+      handleOptionClick(option);
     }
     setShowAdd(false);
   }
 
-
-  function handleOptionClick(option) {
+  function handleOptionClick(option: LabeledOption) {
     if (columnId === 'name') {
       // Обновить name и запросить options для value
       dataDispatch({
@@ -113,11 +138,6 @@ export default function SelectCell({
     setShowSelect(false);
   }
 
-  useEffect(() => {
-    if (addSelectRef && showAdd) {
-      addSelectRef.focus();
-    }
-  }, [addSelectRef, showAdd]);
   return (
     <>
       <div
@@ -125,13 +145,9 @@ export default function SelectCell({
         className="cell-padding d-flex cursor-default align-items-center flex-1"
         onClick={() => setShowSelect(true)}
       >
-        {value.value && (
-          <Badge value={value.value} />
-        )}
+        {value.value && <Badge value={value.value} />}
       </div>
-      {showSelect && (
-        <div className="overlay" onClick={() => setShowSelect(false)} />
-      )}
+      {showSelect && <div className="overlay" onClick={() => setShowSelect(false)} />}
       {showSelect &&
         createPortal(
           <div
@@ -148,10 +164,7 @@ export default function SelectCell({
               overflow: 'auto',
             }}
           >
-            <div
-              className="d-flex flex-wrap-wrap"
-              style={{ marginTop: '-0.5rem' }}
-            >
+            <div className="d-flex flex-wrap-wrap" style={{ marginTop: '-0.5rem' }}>
               {showAdd && (
                 <div
                   key="add-option-input"
@@ -159,7 +172,7 @@ export default function SelectCell({
                   style={{
                     width: 120,
                     padding: '2px 4px',
-                    lineHeight: 1.5
+                    lineHeight: 1.5,
                   }}
                 >
                   <input
@@ -178,31 +191,29 @@ export default function SelectCell({
               >
                 <Badge
                   value={
-                    <span className="svg-icon-sm svg-text" style={{ padding: 3, color: '#fff', fontSize: 14 }}>
+                    <span
+                      className="svg-icon-sm svg-text"
+                      style={{ padding: 3, color: '#fff', fontSize: 14 }}
+                    >
                       Добавить <Plus style={{ stroke: '#fff' }} />
                     </span>
                   }
-                  backgroundColor={'#44403C'}
+                  backgroundColor="#44403C"
                 />
               </div>
-              {options.map(option => (
+              {options.map((option) => (
                 <div
                   key={option.label}
                   className="cursor-pointer mr-5 mt-5"
                   onClick={() => handleOptionClick(option)}
                 >
-                  <Badge
-                    value={option.label}
-                    backgroundColor={'#E4E4E7'}
-                  />
+                  <Badge value={option.label} backgroundColor="#E4E4E7" />
                 </div>
               ))}
-
             </div>
           </div>,
-          getPortalRoot()  // Use our safe getter function
+          getPortalRoot()
         )}
     </>
-
   );
 }

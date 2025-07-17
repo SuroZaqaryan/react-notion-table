@@ -1,7 +1,13 @@
-
+import React from 'react';
 import { Plus } from 'lucide-react';
+import { TableAction } from '../types/types';
 
-export default function PlusCell({ rowIndex, dataDispatch }) {
+interface PlusCellProps {
+  rowIndex: number;
+  dataDispatch: React.Dispatch<TableAction>
+}
+
+export default function PlusCell({ rowIndex, dataDispatch }: PlusCellProps) {
   return (
     <span
       className="svg-icon svg-gray icon-margin"

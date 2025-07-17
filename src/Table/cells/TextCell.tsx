@@ -1,25 +1,36 @@
-import { useEffect, useState } from 'react';
-import ContentEditable from 'react-contenteditable';
+import React, { useEffect, useState } from 'react';
+import ContentEditable, { ContentEditableEvent } from 'react-contenteditable'; 
 import { ActionTypes } from '../utils/utils';
+import { TableAction } from '../types/types';
+
+interface TextCellProps {
+  initialValue: string | number;
+  columnId: string;
+  rowIndex: number;
+  dataDispatch: React.Dispatch<TableAction>;
+}
 
 export default function TextCell({
   initialValue,
   columnId,
   rowIndex,
   dataDispatch,
-}) {
-  const [value, setValue] = useState({ value: initialValue, update: false });
+}: TextCellProps) {
+  const [value, setValue] = useState<{ value: string; update: boolean }>({
+    value: initialValue?.toString() || '',
+    update: false,
+  });
 
-  function onChange(e) {
+  function onChange(e: ContentEditableEvent) {
     setValue({ value: e.target.value, update: false });
   }
 
-  function onBlur(e) {
+  function onBlur() {
     setValue(old => ({ value: old.value, update: true }));
   }
 
   useEffect(() => {
-    setValue({ value: initialValue, update: false });
+    setValue({ value: initialValue?.toString() || '', update: false });
   }, [initialValue]);
 
   useEffect(() => {
@@ -31,13 +42,12 @@ export default function TextCell({
         value: value.value,
       });
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value.update, columnId, rowIndex]);
 
   return (
     <ContentEditable
-      html={(value.value && value.value.toString()) || ''}
+      html={value.value}
       onChange={onChange}
       onBlur={onBlur}
       className="data-input"

@@ -1,5 +1,5 @@
 interface BadgeProps {
-  value: string | number;
+  value: React.ReactNode;
   backgroundColor?: string;
 }
 

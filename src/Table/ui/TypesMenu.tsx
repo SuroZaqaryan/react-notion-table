@@ -1,8 +1,26 @@
 import { ActionTypes, DataTypes, shortId } from '../utils/utils';
 import DataTypeIcon from '../lib/DataTypeIcon';
+import { Dispatch, JSX, SetStateAction } from 'react';
+import { TableAction } from '../types/types';
 
-function getLabel(type) {
+function getLabel(type: string): string {
   return type.charAt(0).toUpperCase() + type.slice(1);
+}
+
+interface TypesMenuProps {
+  popper: {
+    attributes: {
+      [key: string]: any;
+    };
+    styles: {
+      [key: string]: React.CSSProperties;
+    };
+  };
+  popperRef: Dispatch<SetStateAction<HTMLElement | null>>;
+  dataDispatch: Dispatch<TableAction>;
+  setShowTypeMenu: (visible: boolean) => void;
+  onClose: () => void;
+  columnId: string | number;
 }
 
 export default function TypesMenu({
@@ -12,11 +30,16 @@ export default function TypesMenu({
   setShowTypeMenu,
   onClose,
   columnId,
-}) {
-  const types = [
+}: TypesMenuProps): JSX.Element {
+  const types: {
+    type: string;
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    icon: JSX.Element;
+    label: string;
+  }[] = [
     {
       type: DataTypes.SELECT,
-      onClick: e => {
+      onClick: () => {
         dataDispatch({
           type: ActionTypes.UPDATE_COLUMN_TYPE,
           columnId,
@@ -29,7 +52,7 @@ export default function TypesMenu({
     },
     {
       type: DataTypes.TEXT,
-      onClick: e => {
+      onClick: () => {
         dataDispatch({
           type: ActionTypes.UPDATE_COLUMN_TYPE,
           columnId,
@@ -42,7 +65,7 @@ export default function TypesMenu({
     },
     {
       type: DataTypes.NUMBER,
-      onClick: e => {
+      onClick: () => {
         dataDispatch({
           type: ActionTypes.UPDATE_COLUMN_TYPE,
           columnId,
@@ -69,7 +92,7 @@ export default function TypesMenu({
         zIndex: 4,
       }}
     >
-      {types.map(type => (
+      {types.map((type) => (
         <button className="sort-button" onClick={type.onClick} key={shortId()}>
           <span className="svg-icon svg-text icon-margin">{type.icon}</span>
           {type.label}

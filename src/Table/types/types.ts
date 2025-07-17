@@ -141,7 +141,7 @@ export type ReducerAction =
 export type TableAction =
     | { type: "update_data"; data: TableRow[] }
     | { type: "ADD_OPTION_TO_ROW"; rowIndex: number; option: { label: string; value: string; backgroundColor: string }, target: 'name' | 'value' }
-    | { type: "INSERT_ROW"; triggeredFromRow: number }
+    | { type: "INSERT_ROW"; triggeredFromRow: number, index: number, }
     | { type: "toggle_row_selection"; rowIndex: number }
     | { type: "delete_selected_rows" }
     | { type: "add_option_to_column"; columnId: string | number; option: string; backgroundColor: string }

@@ -1,6 +1,13 @@
+import React from 'react';
 import { Checkbox } from 'antd';
 
-export default function CheckboxCell({ rowIndex, dataDispatch, isSelected }) {
+interface CheckboxCellProps {
+  rowIndex: number;
+  dataDispatch: React.Dispatch<{ type: 'toggle_row_selection'; rowIndex: number }>;
+  isSelected: boolean | undefined;
+}
+
+export default function CheckboxCell({ rowIndex, dataDispatch, isSelected }: CheckboxCellProps) {
   return (
     <div
       style={{

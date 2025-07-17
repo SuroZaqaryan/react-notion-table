@@ -1,5 +1,5 @@
-export function grey(value) {
-  let reference = {
+export function grey(value: 50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900): string {
+  const reference: Record<number, string> = {
     50: '#fafafa',
     100: '#f5f5f5',
     200: '#eeeeee',
