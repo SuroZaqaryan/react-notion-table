@@ -87,8 +87,6 @@ function tableReducer(state: TableState, action: TableAction): TableState {
       };
     }
 
-
-
     case 'INSERT_ROW': {
       const newData = [...state.data];
       const indicesToInsert = state.selectedRowIndices.length > 0

@@ -1,10 +1,22 @@
-import { useEffect, useState } from 'react';
-import { ArrowDown, ArrowUp, ArrowLeft, ArrowRight, Trash2  } from 'lucide-react';
+import React, { useState, useEffect, Dispatch } from 'react';
+import { ArrowDown, ArrowUp, ArrowLeft, ArrowRight, Trash2 } from 'lucide-react';
 import { grey } from '../utils/colors';
 import TypesMenu from './TypesMenu';
 import { usePopper } from 'react-popper';
 import { ActionTypes, shortId } from '../utils/utils';
 import DataTypeIcon from '../lib/DataTypeIcon';
+import { TableAction } from '../types/types';
+
+interface HeaderMenuProps {
+  label: string;
+  dataType: string;
+  columnId: string | number;
+  setSortBy: (sortBy: { id: string | number; desc?: boolean }[]) => void;
+  popper: ReturnType<typeof usePopper>;
+  popperRef: React.Ref<HTMLDivElement>;
+  dataDispatch: Dispatch<TableAction>;
+  setShowHeaderMenu: (value: boolean) => void;
+}
 
 export default function HeaderMenu({
   label,
@@ -15,11 +27,11 @@ export default function HeaderMenu({
   popperRef,
   dataDispatch,
   setShowHeaderMenu,
-}) {
-  const [inputRef, setInputRef] = useState(null);
+}: HeaderMenuProps) {
+  const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null);
   const [header, setHeader] = useState(label);
-  const [typeReferenceElement, setTypeReferenceElement] = useState(null);
-  const [typePopperElement, setTypePopperElement] = useState(null);
+  const [typeReferenceElement, setTypeReferenceElement] = useState<HTMLElement | null>(null);
+  const [typePopperElement, setTypePopperElement] = useState<HTMLElement | null>(null);
   const typePopper = usePopper(typeReferenceElement, typePopperElement, {
     placement: 'right',
     strategy: 'fixed',
@@ -44,7 +56,7 @@ export default function HeaderMenu({
 
   const buttons = [
     {
-      onClick: e => {
+      onClick: () => {
         dataDispatch({
           type: ActionTypes.UPDATE_COLUMN_HEADER,
           columnId,
@@ -57,7 +69,7 @@ export default function HeaderMenu({
       label: 'Sort ascending',
     },
     {
-      onClick: e => {
+      onClick: () => {
         dataDispatch({
           type: ActionTypes.UPDATE_COLUMN_HEADER,
           columnId,
@@ -70,7 +82,7 @@ export default function HeaderMenu({
       label: 'Sort descending',
     },
     {
-      onClick: e => {
+      onClick: () => {
         dataDispatch({
           type: ActionTypes.UPDATE_COLUMN_HEADER,
           columnId,
@@ -87,7 +99,7 @@ export default function HeaderMenu({
       label: 'Insert left',
     },
     {
-      onClick: e => {
+      onClick: () => {
         dataDispatch({
           type: ActionTypes.UPDATE_COLUMN_HEADER,
           columnId,
@@ -104,16 +116,16 @@ export default function HeaderMenu({
       label: 'Insert right',
     },
     {
-      onClick: e => {
+      onClick: () => {
         dataDispatch({ type: ActionTypes.DELETE_COLUMN, columnId });
         setShowHeaderMenu(false);
       },
-      icon: <Trash2  />,
+      icon: <Trash2 />,
       label: 'Delete',
     },
   ];
 
-  function handleColumnNameKeyDown(e) {
+  function handleColumnNameKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
       dataDispatch({
         type: ActionTypes.UPDATE_COLUMN_HEADER,
@@ -124,11 +136,11 @@ export default function HeaderMenu({
     }
   }
 
-  function handleColumnNameChange(e) {
+  function handleColumnNameChange(e: React.ChangeEvent<HTMLInputElement>) {
     setHeader(e.target.value);
   }
 
-  function handleColumnNameBlur(e) {
+  function handleColumnNameBlur(e: React.FocusEvent<HTMLInputElement>) {
     e.preventDefault();
     dataDispatch({
       type: ActionTypes.UPDATE_COLUMN_HEADER,
@@ -140,8 +152,8 @@ export default function HeaderMenu({
   return (
     <div
       ref={popperRef}
-      style={{ ...popper.styles.popper, zIndex: 3 }}
-      {...popper.attributes.popper}
+      style={{ ...popper.styles.popper, zIndex: 10 }}
+      {...(popper.attributes.popper ?? {})}
     >
       <div
         className="bg-white shadow-5 border-radius-md"
@@ -197,16 +209,14 @@ export default function HeaderMenu({
         </div>
         <div style={{ borderTop: `2px solid ${grey(200)}` }} />
         <div className="list-padding">
-          {buttons.map(button => (
+          {buttons.map((button) => (
             <button
               type="button"
               className="sort-button"
               onMouseDown={button.onClick}
               key={shortId()}
             >
-              <span className="svg-icon svg-text icon-margin">
-                {button.icon}
-              </span>
+              <span className="svg-icon svg-text icon-margin">{button.icon}</span>
               {button.label}
             </button>
           ))}

@@ -4,6 +4,8 @@ import TableWrapper from "./ui/TableWrapper";
 import TopInfoEditor from "./ui/TopInfoEditor";
 import BottomInfoEditor from "./ui/BottomInfoEditor";
 import { reducer, initialState } from "./lib/reducer";
+import { mapTablesToCharacteristics } from "./lib/mapTablesToCharacteristics";
+
 import columns from "./columns/columns";
 import {
   AppState,
@@ -11,8 +13,6 @@ import {
   RootData,
   Warranty,
   Payment,
-  MainChar,
-  CharacteristicItem,
 } from './types/types';
 
 function MainTableView() {
@@ -22,39 +22,7 @@ function MainTableView() {
   useEffect(() => {
     if (!state) return;
 
-    const characteristics: CharacteristicItem[] = state.tables.map(({ state: table }) => {
-      const { metadata, data } = table;
-
-      const mainCharMap = new Map<string, MainChar>();
-      const dopCharMap = new Map<string, MainChar>();
-
-      for (const [idx, row] of data.entries()) {
-        const key = row.isNewRow ? `newRow_${idx}` : row.name || "";
-        const targetMap = mainCharMap;
-
-        if (!targetMap.has(key)) {
-          targetMap.set(key, {
-            name: row.isNewRow ? row.name || "" : key,
-            unit: row.unit || "",
-            values: [],
-          });
-        }
-
-        targetMap.get(key)?.values.push({
-          value: row.value || "",
-          is_popular: !row.isNewRow,
-        });
-      }
-
-      return {
-        chapter_name: metadata.chapterName,
-        item_name: metadata.itemName,
-        OKPD2: metadata.okpd2,
-        quantity: metadata.quantity,
-        main_chars: Array.from(mainCharMap.values()),
-        dop_chars: Array.from(dopCharMap.values()),
-      };
-    });
+    const characteristics = mapTablesToCharacteristics(state.tables);
 
     const payload: RootData = {
       date: state.date,

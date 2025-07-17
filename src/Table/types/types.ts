@@ -144,14 +144,14 @@ export type TableAction =
     | { type: "INSERT_ROW"; triggeredFromRow: number }
     | { type: "toggle_row_selection"; rowIndex: number }
     | { type: "delete_selected_rows" }
-    | { type: "add_option_to_column"; columnId: string; option: string; backgroundColor: string }
-    | { type: "update_column_type"; columnId: string; dataType: string }
+    | { type: "add_option_to_column"; columnId: string | number; option: string; backgroundColor: string }
+    | { type: "update_column_type"; columnId: string | number; dataType: string }
     | { type: "update_metadata"; key: keyof TableMetadata; value: string }
-    | { type: "update_column_header"; columnId: string; label: string }
-    | { type: "update_cell"; rowIndex: number; columnId: string; value: string | number }
-    | { type: "add_column_to_left"; columnId: string; focus: boolean }
-    | { type: "add_column_to_right"; columnId: string; focus: boolean }
-    | { type: "delete_column"; columnId: string }
+    | { type: "update_column_header"; columnId: string | number; label: string }
+    | { type: "update_cell"; rowIndex: number; columnId: string | number; value: string | number }
+    | { type: "add_column_to_left"; columnId: string | number; focus: boolean }
+    | { type: "add_column_to_right"; columnId: string | number; focus: boolean }
+    | { type: "delete_column"; columnId: string | number }
     | { type: "enable_reset" }
     | { type: "init" }
     | {

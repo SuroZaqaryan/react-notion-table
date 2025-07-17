@@ -1,6 +1,6 @@
 import "../styles/style.css";
 import { Flex, Typography } from "antd";
-import EditableParagraph from "../ui/EditableParagraph";
+import EditableParagraph from "./EditableParagraph";
 
 function BottomInfoEditor({ sections, onChange }) {
   return (

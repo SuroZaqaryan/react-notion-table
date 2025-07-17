@@ -1,18 +1,33 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, Dispatch } from 'react';
 import { usePopper } from 'react-popper';
 import { Constants } from '../utils/utils';
 import AddColumnHeader from './AddColumnHeader';
 import DataTypeIcon from '../lib/DataTypeIcon';
 import HeaderMenu from './HeaderMenu';
+import { TableAction } from '../types/types';
 
-export default function Header({
-  column: { id, created, label, dataType, getResizerProps, getHeaderProps },
-  setSortBy,
-  dataDispatch,
-}) {
-  const [showHeaderMenu, setShowHeaderMenu] = useState(created || false);
-  const [headerMenuAnchorRef, setHeaderMenuAnchorRef] = useState(null);
-  const [headerMenuPopperRef, setHeaderMenuPopperRef] = useState(null);
+interface Column {
+  id: string | number;
+  created?: boolean;
+  label: string;
+  dataType: string;
+  getResizerProps?: () => React.HTMLAttributes<HTMLDivElement>;
+  getHeaderProps: () => React.HTMLAttributes<HTMLDivElement>;
+}
+
+interface HeaderProps {
+  column: Column;
+  setSortBy: (sortBy: { id: string | number; desc?: boolean }[]) => void;
+  dataDispatch: Dispatch<TableAction>;
+}
+
+export default function Header({ column, setSortBy, dataDispatch }: HeaderProps) {
+  const { id, created, label, dataType, getResizerProps, getHeaderProps } = column;
+
+  const [showHeaderMenu, setShowHeaderMenu] = useState<boolean>(created || false);
+  const [headerMenuAnchorRef, setHeaderMenuAnchorRef] = useState<HTMLElement | null>(null);
+  const [headerMenuPopperRef, setHeaderMenuPopperRef] = useState<HTMLElement | null>(null);
+
   const headerMenuPopper = usePopper(headerMenuAnchorRef, headerMenuPopperRef, {
     placement: 'bottom',
     strategy: 'absolute',
@@ -41,7 +56,7 @@ export default function Header({
             className="th-content"
             onClick={() => setShowHeaderMenu(true)}
             ref={setHeaderMenuAnchorRef}
-            disabled // Функционал работает, в будущем можно включить кнопку
+            disabled // Функционал кнопки работает, в будущем можно включить кнопку
           >
             <span className="svg-icon svg-gray icon-margin">
               <DataTypeIcon dataType={dataType} />

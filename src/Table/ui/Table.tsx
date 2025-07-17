@@ -1,15 +1,29 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import clsx from 'clsx';
 import {
   useTable,
   useBlockLayout,
   useResizeColumns,
   useSortBy,
+  Row as TableRow,
+  Cell as TableCell,
+  Column,
+  HeaderGroup,
 } from 'react-table';
+
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Cell from '../cells/Cell';
 import Header from './Header';
+import { TableAction } from '../types/types';
+
+interface RowProps {
+  row: TableRow<any>;
+  index: number;
+  prepareRow: (row: TableRow<any>) => void;
+  moveRow: (dragIndex: number, hoverIndex: number) => void;
+  selectedRowIndices?: number[];
+}
 
 const defaultColumn = {
   minWidth: 40,
@@ -20,20 +34,20 @@ const defaultColumn = {
   sortType: 'alphanumericFalsyLast',
 };
 
-const Row = ({ row, index, prepareRow, moveRow, selectedRowIndices }) => {
-  const dropRef = React.useRef(null);
+const Row: React.FC<RowProps> = ({ row, index, prepareRow, moveRow, selectedRowIndices }) => {
+  const dropRef = useRef<HTMLDivElement>(null);
 
-  const [{ isDragging }, drag, preview] = useDrag({
+  const [{ isDragging }, drag, preview] = useDrag(() => ({
     type: 'row',
     item: { type: 'row', index },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-  });
+  }), [index]);
 
-  const [{ isOver }, drop] = useDrop({
+  const [{ isOver }, drop] = useDrop(() => ({
     accept: 'row',
-    hover(item, monitor) {
+    hover(item: any, monitor) {
       if (!dropRef.current) return;
       const dragIndex = item.index;
       const hoverIndex = index;
@@ -42,7 +56,7 @@ const Row = ({ row, index, prepareRow, moveRow, selectedRowIndices }) => {
       const hoverBoundingRect = dropRef.current.getBoundingClientRect();
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      const hoverClientY = clientOffset!.y - hoverBoundingRect.top;
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
@@ -53,7 +67,7 @@ const Row = ({ row, index, prepareRow, moveRow, selectedRowIndices }) => {
     collect: (monitor) => ({
       isOver: monitor.isOver(),
     }),
-  });
+  }), [index]);
 
   drop(preview(dropRef));
   prepareRow(row);
@@ -82,7 +96,7 @@ const Row = ({ row, index, prepareRow, moveRow, selectedRowIndices }) => {
         },
       })}
     >
-      {row.cells.map((cell, cellIndex) => {
+      {row.cells.map((cell: TableCell<any>, cellIndex: number) => {
         const isHiddenCell = ['checkbox', 'drag-handle', 'plus'].includes(cell.column.dataType);
 
         return (
@@ -107,41 +121,34 @@ const Row = ({ row, index, prepareRow, moveRow, selectedRowIndices }) => {
   );
 };
 
-function Table({ columns, data, dispatch: dataDispatch, skipReset, selectedRowIndices }) {
-  const sortTypes = useMemo(
-    () => ({
-      alphanumericFalsyLast(rowA, rowB, columnId, desc) {
-        if (!rowA.values[columnId] && !rowB.values[columnId]) {
-          return 0;
-        }
+interface TableProps {
+  columns: Column<any>[];
+  data: any[];
+  dispatch: React.Dispatch<TableAction>;
+  skipReset?: boolean;
+  selectedRowIndices?: number[];
+}
 
-        if (!rowA.values[columnId]) {
-          return desc ? -1 : 1;
-        }
+const Table: React.FC<TableProps> = ({ columns, data, dispatch: dataDispatch, skipReset, selectedRowIndices }) => {
+  const sortTypes = useMemo(() => ({
+    alphanumericFalsyLast: (rowA: any, rowB: any, columnId: string, desc?: boolean) => {
+      if (!rowA.values[columnId] && !rowB.values[columnId]) return 0;
+      if (!rowA.values[columnId]) return desc ? -1 : 1;
+      if (!rowB.values[columnId]) return desc ? 1 : -1;
 
-        if (!rowB.values[columnId]) {
-          return desc ? 1 : -1;
-        }
-
-        return isNaN(rowA.values[columnId])
-          ? rowA.values[columnId].localeCompare(rowB.values[columnId])
-          : rowA.values[columnId] - rowB.values[columnId];
-      },
-    }),
-    []
-  );
+      return isNaN(rowA.values[columnId])
+        ? rowA.values[columnId].localeCompare(rowB.values[columnId])
+        : rowA.values[columnId] - rowB.values[columnId];
+    },
+  }), []);
 
   const columnsWithSelection = useMemo(() =>
     columns.map(col => ({
       ...col,
-      Cell: props => (
-        <Cell
-          {...props}
-          selectedRowIndices={selectedRowIndices}
-        />
-      )
-    }))
-    , [columns, selectedRowIndices]);
+      Cell: (props: any) => <Cell {...props} selectedRowIndices={selectedRowIndices} />,
+    })),
+    [columns, selectedRowIndices]
+  );
 
   const {
     getTableProps,
@@ -149,10 +156,9 @@ function Table({ columns, data, dispatch: dataDispatch, skipReset, selectedRowIn
     headerGroups,
     rows,
     prepareRow,
-    totalColumnsWidth,
   } = useTable(
     {
-      columns: columnsWithSelection, 
+      columns: columnsWithSelection,
       data,
       defaultColumn,
       dataDispatch,
@@ -166,7 +172,7 @@ function Table({ columns, data, dispatch: dataDispatch, skipReset, selectedRowIn
     useSortBy
   );
 
-  const moveRow = (dragIndex, hoverIndex) => {
+  const moveRow = (dragIndex: number, hoverIndex: number) => {
     const newData = [...data];
     const draggedRow = newData[dragIndex];
     newData.splice(dragIndex, 1);
@@ -174,17 +180,9 @@ function Table({ columns, data, dispatch: dataDispatch, skipReset, selectedRowIn
     dataDispatch({ type: 'update_data', data: newData });
   };
 
-  function isTableResizing() {
-    for (let headerGroup of headerGroups) {
-      for (let column of headerGroup.headers) {
-        if (column.isResizing) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
+  const isTableResizing = () => headerGroups.some((group: HeaderGroup<any>) =>
+    group.headers.some(col => col.isResizing)
+  );
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -227,6 +225,6 @@ function Table({ columns, data, dispatch: dataDispatch, skipReset, selectedRowIn
       </div>
     </DndProvider>
   );
-}
+};
 
 export default Table;
