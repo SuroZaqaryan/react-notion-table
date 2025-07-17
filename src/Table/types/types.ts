@@ -6,13 +6,16 @@ export interface ValueOption {
 export interface MainChar {
     name: string;
     values: ValueOption[];
+    unit: string;
 }
 
 export interface CharacteristicItem {
     chapter_name: string;
     item_name: string;
     OKPD2: string;
+    quantity: number,
     main_chars: MainChar[];
+    dop_chars: MainChar[];
 }
 
 export interface Warranty {
@@ -33,7 +36,6 @@ export interface RootData {
     payment: Payment;
 }
 
-// types.ts
 export interface TableRow {
     item_name?: string;
     name?: string;
@@ -42,7 +44,7 @@ export interface TableRow {
     options?: Array<{ label: string; value: string; backgroundColor: string }>;
     nameOptions?: Array<{ label: string; value: string; backgroundColor: string }>;
     isNewRow?: boolean;
-    [key: string]: any; // For dynamic column access
+    [key: string]: any; 
 }
 
 export interface TableColumn {
@@ -51,13 +53,14 @@ export interface TableColumn {
     accessor: string;
     dataType: string;
     created?: boolean;
-    options?: { label: string; backgroundColor: string }[]; // <- поставь вопросительный знак
+    options?: { label: string; backgroundColor: string }[];
 }
 
 export interface TableMetadata {
     chapterName: string;
     itemName: string;
     okpd2: string;
+    quantity: number,
 }
 
 export interface TableState {
@@ -113,7 +116,6 @@ export type ReducerAction =
         tableId: string;
         action: TableAction
     }
-    // Add any other top-level actions your reducer handles
     | {
         type: "reset_state";
     }
@@ -127,7 +129,7 @@ export type ReducerAction =
     }
     | {
         type: "reorder_tables";
-        newOrder: string[]; // array of table IDs in new order
+        newOrder: string[];
     };
 
 export type TableAction =

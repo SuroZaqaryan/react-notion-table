@@ -73,7 +73,7 @@ function EditableParagraph({
                     />
                 </Tooltip>
 
-                <Flex className="edit-paragraph" wrap align="center">
+                <Flex className="edit-paragraph" wrap align="flex-end">
                     {label && (
                         <div style={{ display: 'flex', alignItems: 'center', marginRight: 10, whiteSpace: 'normal' }}>
                             {label}

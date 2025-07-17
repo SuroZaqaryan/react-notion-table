@@ -21,6 +21,7 @@ export interface CharacteristicItem {
     chapter_name: string;
     item_name: string;
     OKPD2: string;
+    quantity: number,
     main_chars: MainChar[];
     dop_chars?: MainChar[]; // Added as it's used in the code
 }
@@ -51,6 +52,7 @@ interface TableState {
         chapterName: string;
         itemName: string;
         okpd2: string;
+        quantity: number,
     };
     dopChars?: any; // Replace with proper type if available
     selectedRowIndices: number[];
@@ -109,6 +111,7 @@ function MainTableView() {
         chapter_name: metadata.chapterName,
         item_name: metadata.itemName,
         OKPD2: metadata.okpd2,
+        quantity: metadata.quantity,
         main_chars: Array.from(mainCharMap.values()),
         dop_chars: Array.from(dopCharMap.values()),
       };
@@ -155,6 +158,7 @@ function MainTableView() {
                   chapterName: table.chapterName,
                   itemName: table.itemName,
                   okpd2: table.okpd2,
+                  quantity: table.quantity,
                 },
                 dopChars: table.dopChars,
                 mainChars: table.mainChars,

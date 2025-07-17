@@ -43,6 +43,7 @@ function transformSpecToTables(spec) {
       chapterName: item.chapter_name,
       itemName: item.item_name,
       okpd2: item.OKPD2,
+      quantity: item.quantity,
       data: rows,
       dopChars: item.dop_chars || [],
       mainChars: item.main_chars || [], 

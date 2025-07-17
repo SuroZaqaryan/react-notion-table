@@ -56,7 +56,17 @@ function TableWrapper({
             as={Typography.Title}
             asProps={{ level: 5 }}
             label={<Title level={5} style={{ margin: 0, fontWeight: 400, color: '#7c7c7c' }}>
-              ОКПД2: 
+              ОКПД2:
+            </Title>}
+          />
+
+          <EditableParagraph
+            value={state.metadata.quantity}
+            onChange={handleMetadataChange("quantity")}
+            as={Typography.Title}
+            asProps={{ level: 5 }}
+            label={<Title level={5} style={{ margin: 0, fontWeight: 400, color: '#7c7c7c' }}>
+              Количество:
             </Title>}
           />
         </div>
