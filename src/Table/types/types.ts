@@ -3,6 +3,12 @@ export interface ValueOption {
     is_popular: boolean;
 }
 
+export interface LabeledOption {
+  label: string;
+  value: string;
+  backgroundColor: string;
+}
+
 export interface MainChar {
     name: string;
     values: ValueOption[];
@@ -142,7 +148,7 @@ export type TableAction =
     | { type: "update_column_type"; columnId: string; dataType: string }
     | { type: "update_metadata"; key: keyof TableMetadata; value: string }
     | { type: "update_column_header"; columnId: string; label: string }
-    | { type: "update_cell"; rowIndex: number; columnId: string; value: any }
+    | { type: "update_cell"; rowIndex: number; columnId: string; value: string | number }
     | { type: "add_column_to_left"; columnId: string; focus: boolean }
     | { type: "add_column_to_right"; columnId: string; focus: boolean }
     | { type: "delete_column"; columnId: string }
@@ -152,5 +158,4 @@ export type TableAction =
         type: 'update_row_by_name';
         rowIndex: number;
         name: string;
-    }
-    ;
+    };

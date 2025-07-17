@@ -1,5 +1,5 @@
 import { shortId } from "../utils/utils";
-import { AppState, ReducerAction, TableAction, TableState, TableRow, Warranty, Payment } from "../types/types";
+import { AppState, ReducerAction, TableAction, LabeledOption, TableState, TableRow, Warranty, Payment } from "../types/types";
 
 export const initialState: AppState | null = null;
 
@@ -67,7 +67,7 @@ function tableReducer(state: TableState, action: TableAction): TableState {
       const newData = [...state.data];
       const row = { ...newData[action.rowIndex] };
 
-      const addUniqueOption = (options: any[] = []) =>
+      const addUniqueOption = (options: LabeledOption[] = []): LabeledOption[] =>
         [...options, action.option].filter(
           (opt, i, self) => self.findIndex(o => o.label === opt.label) === i
         );
