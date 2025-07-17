@@ -126,6 +126,73 @@ html {
   outline: none;
 }
 
+.cell-option-block {
+  position: relative;
+  left: -3px;
+  min-height: 200px;
+  margin-bottom: 5px;
+  min-width: 270px;
+  max-height: 270px;
+  overflow: auto;
+}
+
+.empty-options {
+  top: 45%;
+  transform: translateY(-50%);
+  position: absolute;
+  right: 0;
+  left: 0;
+}
+
+.cell {
+  background-color: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+    0 9px 28px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Webkit-браузеры (Chrome, Edge, Safari) */
+.cell-option-block::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.cell-option-block::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.cell-option-block::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  border: 2px solid #fff;
+}
+
+.cell-option-block::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.cell-option {
+  padding: 2px 0;
+}
+
+.cell-option-text {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background-color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 10px 12px;
+  text-transform: capitalize;
+  font-size: 15px;
+}
+
+.cell-option-text:hover {
+  background-color: #eef0fc;
+}
+
 .noselect {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
