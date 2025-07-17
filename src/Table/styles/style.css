@@ -476,7 +476,7 @@ html {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  padding-left: 2rem;
+  padding-left: 5rem;
 }
 
 .editable-fields {
@@ -506,8 +506,21 @@ html {
 .info-block {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 4px;
   width: 100%;
-  padding-left: 2rem;
+  padding-left: 5rem;
   max-width: 920px;
+}
+
+.edit-controls {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  pointer-events: none;
+  position: relative;
+  right: 2px;
+}
+
+.edit-paragraph-wrapper:hover .edit-controls {
+  opacity: 1;
+  pointer-events: all;
 }

@@ -6,7 +6,7 @@ function BottomInfoEditor({ sections, onChange }) {
   return (
     <div className="info-block">
       {sections.map(({ chapter_name, description }, index) => (
-        <div key={index} >
+        <div key={index}>
           <EditableParagraph
             value={chapter_name}
             onChange={(val) => onChange(index, "chapter_name", val)}

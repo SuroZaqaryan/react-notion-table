@@ -11,28 +11,20 @@ const suggestions = [
     'Исправить шаблонные фразы',
 ];
 
-function EditableParagraph({ value, onChange, label, as: Component = 'span', asProps = {}, inputWidth = '100%' }) {
+function EditableParagraph({
+    value,
+    onChange,
+    label,
+    as: Component = 'span',
+    asProps = {},
+}) {
     const { token } = theme.useToken();
-
-    const [editing, setEditing] = useState(false);
-    const [tempValue, setTempValue] = useState(value);
     const [showPopup, setShowPopup] = useState(false);
     const [loading, setLoading] = useState(false);
-
     const [selectedSuggestion, setSelectedSuggestion] = useState('');
-    const inputRef = useRef(null);
+
+    const editableRef = useRef(null);
     const popupRef = useRef(null);
-
-    const finishEditing = () => {
-        setEditing(false);
-        onChange(tempValue);
-    };
-
-    useEffect(() => {
-        if (editing && inputRef.current) {
-            inputRef.current.focus();
-        }
-    }, [editing]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -44,14 +36,20 @@ function EditableParagraph({ value, onChange, label, as: Component = 'span', asP
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
+    const handleInput = () => {
+        const newValue = editableRef.current?.innerText || '';
+        onChange(newValue);
+    };
+
     const applySuggestion = () => {
         if (!selectedSuggestion) return;
 
         setLoading(true);
         setTimeout(() => {
-            const fakeServerResponse = selectedSuggestion;
-            onChange(fakeServerResponse);
-            setTempValue(fakeServerResponse);
+            onChange(selectedSuggestion);
+            if (editableRef.current) {
+                editableRef.current.innerText = selectedSuggestion;
+            }
             setShowPopup(false);
             setLoading(false);
         }, 1000);
@@ -59,62 +57,46 @@ function EditableParagraph({ value, onChange, label, as: Component = 'span', asP
 
     return (
         <div style={{ position: 'relative' }}>
-            <Flex align="center" gap={8}>
-                <Flex style={{ position: 'relative', right: '1.5rem' }} gap={14}>
-                    <Tooltip title="Редактировать с помощью ИИ">
-                        <Button
-                            type="text"
-                            onClick={() => setShowPopup(!showPopup)}
-                            style={{ background: showPopup ? '#E4E4E7' : '#fff' }}
-                            icon={
-                                <WandSparkles
-                                    style={{ display: 'flex', cursor: 'pointer' }}
-                                    size={16}
-                                    color="gray"
-                                />
-                            }
-                        />
-                    </Tooltip>
+            <Flex className="edit-paragraph-wrapper" align="center" gap={8}>
+                <Tooltip className='edit-controls' title="Редактировать с помощью ИИ">
+                    <Button
+                        type="text"
+                        onClick={() => setShowPopup(!showPopup)}
+                        style={{minWidth: 32, background: showPopup ? '#E4E4E7' : '#fff' }}
+                        icon={
+                            <WandSparkles
+                                style={{ display: 'flex', cursor: 'pointer' }}
+                                size={16}
+                                color="gray"
+                            />
+                        }
+                    />
+                </Tooltip>
 
-                    <Tooltip title="Редактировать вручную">
-                        <Button
-                            type="text"
-                            onClick={() => setEditing(true)}
-                            style={{ background: editing ? '#E4E4E7' : '#fff' }}
-                            icon={
-                                <Pencil
-                                    style={{ display: 'flex', cursor: 'pointer' }}
-                                    size={16}
-                                    color="gray"
-                                />
-                            }
-                        />
-                    </Tooltip>
-                </Flex>
-
-                <Flex gap={4} wrap={!editing} align='flex-end'>
-                    {
-                        label &&
-                        <div style={{ display: 'flex', alignItems: 'center', marginRight: 10, whiteSpace: editing ? 'nowrap' : 'normal' }}>
+                <Flex className="edit-paragraph" wrap align="center">
+                    {label && (
+                        <div style={{ display: 'flex', alignItems: 'center', marginRight: 10, whiteSpace: 'normal' }}>
                             {label}
                         </div>
-                    }
-
-                    {editing ? (
-                        <Input
-                            ref={inputRef}
-                            value={tempValue}
-                            onChange={(e) => setTempValue(e.target.value)}
-                            style={{ minWidth: inputWidth }}
-                            onPressEnter={finishEditing}
-                            onBlur={finishEditing}
-                            size="middle"
-                        />
-                    ) : (
-                        <Component style={{ margin: 0, background: showPopup ? '#E4E4E7' : '#fff' }} {...asProps}>
-                            {value}
-                        </Component>
                     )}
+
+                    <Component
+                        {...asProps}
+                        ref={editableRef}
+                        contentEditable
+                        suppressContentEditableWarning
+                        onBlur={handleInput}
+                        style={{
+                            margin: 0,
+                            borderRadius: 4,
+                            minWidth: 100,
+                            background: showPopup ? '#E4E4E7' : '#fff',
+                            outline: 'none',
+                            cursor: 'text',
+                        }}
+                    >
+                        {value}
+                    </Component>
                 </Flex>
             </Flex>
 
@@ -146,7 +128,6 @@ function EditableParagraph({ value, onChange, label, as: Component = 'span', asP
                         >
                             <Plus style={{ cursor: 'pointer' }} />
                             <Input
-                                rows={4}
                                 value={selectedSuggestion}
                                 onChange={(e) => setSelectedSuggestion(e.target.value)}
                                 style={{ border: 'none', borderRadius: 4 }}
@@ -196,6 +177,5 @@ function EditableParagraph({ value, onChange, label, as: Component = 'span', asP
         </div>
     );
 }
-
 
 export default EditableParagraph;
