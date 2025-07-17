@@ -1,12 +1,12 @@
 import "../styles/style.css";
-import { Typography } from 'antd';
+import { Flex, Typography } from 'antd';
 import EditableParagraph from "../ui/EditableParagraph";
 
 const { Title } = Typography;
 
 function TopInfoEditor({ date, address, onChange }) {
   return (
-    <div className="info-block">
+    <Flex vertical className="info-block">
       <EditableParagraph
         value={address}
         onChange={(val) => onChange("address", val)}
@@ -27,7 +27,7 @@ function TopInfoEditor({ date, address, onChange }) {
           </Title>
         }
       />
-    </div>
+    </Flex>
   );
 }
 

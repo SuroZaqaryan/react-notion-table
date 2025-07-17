@@ -178,7 +178,9 @@ html {
   padding: 0.5rem;
   display: flex;
   align-items: center;
+  width: 100%;
   height: 60px;
+  border: none;
   white-space: normal;
   line-height: 1.3;
   gap: 4px;
@@ -219,7 +221,7 @@ html {
 .table {
   display: inline-block;
   border-spacing: 0;
-  margin: 2rem auto;
+  margin: 1.5rem auto;
   height: fit-content;
 }
 
@@ -504,9 +506,6 @@ html {
 }
 
 .info-block {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
   width: 100%;
   padding-left: 5rem;
   max-width: 920px;

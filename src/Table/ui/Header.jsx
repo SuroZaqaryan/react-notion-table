@@ -37,16 +37,17 @@ export default function Header({
     return (
       <>
         <div {...getHeaderProps()} className="th noselect d-inline-block">
-          <div
+          <button
             className="th-content"
             onClick={() => setShowHeaderMenu(true)}
             ref={setHeaderMenuAnchorRef}
+            disabled // Функционал работает, в будущем можно включить кнопку
           >
             <span className="svg-icon svg-gray icon-margin">
               <DataTypeIcon dataType={dataType} />
             </span>
             {label}
-          </div>
+          </button>
 
           {getResizerProps && (
             <div {...getResizerProps()} className="resizer" />

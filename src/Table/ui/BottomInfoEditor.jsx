@@ -1,10 +1,10 @@
 import "../styles/style.css";
-import { Typography } from "antd";
+import { Flex, Typography } from "antd";
 import EditableParagraph from "../ui/EditableParagraph";
 
 function BottomInfoEditor({ sections, onChange }) {
   return (
-    <div className="info-block">
+    <Flex vertical gap={12} className="info-block">
       {sections.map(({ chapter_name, description }, index) => (
         <div key={index}>
           <EditableParagraph
@@ -24,7 +24,7 @@ function BottomInfoEditor({ sections, onChange }) {
           </div>
         </div>
       ))}
-    </div>
+    </Flex>
   );
 }
 
